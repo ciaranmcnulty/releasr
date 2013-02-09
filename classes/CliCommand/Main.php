@@ -34,7 +34,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
         $commandObj = $this->_getCommandObjFromConfig($commandName);
         
         $commandArguments = array_slice($arguments, 1);
-        $commandObj->run($commandArguments);
+        return $commandObj->run($commandArguments);
     }
     
     /**

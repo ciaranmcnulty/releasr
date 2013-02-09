@@ -43,14 +43,14 @@ class Releasr_CliCommand_MainTest extends PHPUnit_Framework_Testcase
     /**
     * @expectedException Releasr_Exception_CliArgs
     */
-    public function testCommandThrowsExceptionWhenUnrecognisedCommandIsProvided()
+    public function testCommandThrowsExceptionWhenUnrecognisedNameIsProvided()
     {
         $arguments = array('unknown_command');
         
         $this->_command->run($arguments);
     }
     
-    public function testCommandInvokesRunOnRegisteredCommandWhenItIsPresent()
+    public function testCommandInvokesRunOnRegisteredCommandWhenRecognisedNameIsProvided()
     {
         $arguments = array('known_command');
         $this->_mockCommand->expects($this->once())
@@ -59,7 +59,7 @@ class Releasr_CliCommand_MainTest extends PHPUnit_Framework_Testcase
         $this->_command->run($arguments);
     }
     
-    public function testCommandInvokesCommandWithSubsetOfArguments()
+    public function testCommandInvokesRegisteredCommandWithSubsetOfArguments()
     {
         $arguments = array('known_command', 'a', 'b', 'c');
 
@@ -68,6 +68,19 @@ class Releasr_CliCommand_MainTest extends PHPUnit_Framework_Testcase
             ->with($this->equalTo(array('a', 'b', 'c')));
 
         $this->_command->run($arguments);   
+    }
+    
+    public function testCommandReturnsOutputOfInvokedRegisteredCommand()
+    {
+        $arguments = array('known_command');
+
+        $this->_mockCommand->expects($this->any())
+            ->method('run')
+            ->will($this->returnValue('example output'));
+
+        $output = $this->_command->run($arguments);
+        
+        $this->assertSame('example output', $output);
     }
     
 }

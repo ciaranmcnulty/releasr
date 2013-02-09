@@ -7,7 +7,11 @@
 * @package Releasr
 */
 
+require_once 'classes/Release.php';
+require_once 'classes/Release/Lister.php';
 require_once 'classes/CliCommand/Interface.php';
 require_once 'classes/CliCommand/Main.php';
 require_once 'classes/CliCommand/List.php';
 require_once 'classes/Exception/CliArgs.php';
+require_once 'classes/Exception/Config.php';
+require_once 'classes/Exception/Repo.php';
