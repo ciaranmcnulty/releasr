@@ -1,0 +1,19 @@
+releasr list <project> 
+
+    Returns the list of releases for the current project
+    
+releasr review <project> trunk/branch
+
+    Reviews the differences from either:
+        a) Any commits on the latest release
+        b) Any commits on trunk since the latest release was made
+        c) All of the above
+    
+releasr prepare <project>
+    
+    Makes a release for the current project with appropriate name
+    
+releasr release <project>
+
+    Releases the latest release tag to live
+ 
