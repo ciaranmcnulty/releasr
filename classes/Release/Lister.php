@@ -25,7 +25,7 @@ class Releasr_Release_Lister
      * Gets the list of releases for the named project
      *
      * @param string $projectName
-     * @return array Releasr_Release objects for the project
+     * @return array Releasr_Repo_Release objects for the project
      */
     public function listReleases($projectName)
     {
@@ -52,7 +52,7 @@ class Releasr_Release_Lister
     
     /**
      * @param string Xml svn list response from the repository
-     * @return array Releasr_Release objects
+     * @return array Releasr_Repo_Release objects
      */
     private function _parseXmlIntoReleaseObjects($xmlResponse)
     {        
@@ -62,7 +62,7 @@ class Releasr_Release_Lister
         
         $releases = array();
         foreach ($xml->list->entry as $entry) {
-            $release = new Releasr_Release;
+            $release = new Releasr_Repo_Release;
             $release->name = (string)$entry->name;
             $releases[] = $release;
         }

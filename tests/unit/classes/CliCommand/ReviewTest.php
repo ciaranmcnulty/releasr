@@ -63,7 +63,7 @@ class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
 
     public function testReviewShowsAppropriateMessageIfOneChangeFound()
     {
-        $change = $this->getMock('Releasr_Change');
+        $change = $this->getMock('Releasr_Repo_Change');
         
         $this->_releaseReviewer->expects($this->any())
              ->method('reviewRelease')
@@ -76,11 +76,11 @@ class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
     
     public function testReviewOutputsListOfTrunkChanges()
     {
-        $change1 = $this->getMock('Releasr_Change');
+        $change1 = $this->getMock('Releasr_Repo_Change');
         $change1->user = 'user1';
         $change1->comment = 'comment1';
         
-        $change2 = $this->getMock('Releasr_Change');
+        $change2 = $this->getMock('Releasr_Repo_Change');
         $change2->user = 'user2';
         $change2->comment = 'comment2';
 

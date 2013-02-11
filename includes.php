@@ -7,8 +7,8 @@
 * @package Releasr
 */
 
-require_once 'classes/Release.php';
-require_once 'classes/Change.php';
+require_once 'classes/Repo/Release.php';
+require_once 'classes/Repo/Change.php';
 require_once 'classes/Release/Lister.php';
 require_once 'classes/Release/Reviewer.php';
 require_once 'classes/CliCommand/Interface.php';

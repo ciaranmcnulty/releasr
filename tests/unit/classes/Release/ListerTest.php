@@ -92,7 +92,7 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
     {
         $releases = $this->_lister->listReleases('myproject');
         
-        $this->assertInstanceOf('Releasr_Release', $releases[0]);
+        $this->assertInstanceOf('Releasr_Repo_Release', $releases[0]);
         
     }
 

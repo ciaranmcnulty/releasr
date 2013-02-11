@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-class Releasr_Change{
+class Releasr_Repo_Change{
     
     /**
      * @var string The name of the author

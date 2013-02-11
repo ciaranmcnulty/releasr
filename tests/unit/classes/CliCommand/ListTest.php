@@ -78,7 +78,7 @@ class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
 
     public function testListShowsNumberOfReleasesFound()
     {
-        $release = $this->getMock('Releasr_Release');
+        $release = $this->getMock('Releasr_Repo_Release');
 
         $this->_releaseLister->expects($this->any())
             ->method('listReleases')
@@ -93,7 +93,7 @@ class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
 
     public function testListProperlyPluralisesWhenThereIsOnlyOneRelease()
     {
-        $release = $this->getMock('Releasr_Release');
+        $release = $this->getMock('Releasr_Repo_Release');
 
         $this->_releaseLister->expects($this->any())
             ->method('listReleases')
@@ -106,10 +106,10 @@ class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
     
     public function testListOutputsNamesOfReleases()
     {    
-        $release1 = $this->getMock('Releasr_Release');
+        $release1 = $this->getMock('Releasr_Repo_Release');
         $release1->name = 'FOO';
         
-        $release2 = $this->getMock('Releasr_Release');
+        $release2 = $this->getMock('Releasr_Repo_Release');
         $release2->name = 'BAR';
 
         $this->_releaseLister->expects($this->any())

@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-class Releasr_Release{
+class Releasr_Repo_Release{
     
     /**
      * @var string The name of the relese
