@@ -2,6 +2,7 @@
 
 /**
  * CLI command that outputs a list of releases on a particular branch
+ * @package Releasr
  */
 class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
 {

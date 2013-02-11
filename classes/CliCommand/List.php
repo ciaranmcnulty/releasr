@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-class Releasr_CliCommand_List implements Releasr_CliCommand_Interface
+class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
 {
     /**
      * @var Releasr_Release_Lister
@@ -37,19 +37,6 @@ class Releasr_CliCommand_List implements Releasr_CliCommand_Interface
     }
     
     /**
-     * Assumes the name of the project is the first argument provided
-     *
-     * @param array $arguments
-     */
-    protected function _getProjectNameFromArguments($arguments)
-    {
-        if (0==count($arguments)) {
-            throw new Releasr_Exception_CliArgs('No project name specified');
-        }
-        return $arguments[0];
-    }
-    
-    /**
      * Generates a sensible message about how many releases there are
      * 
      * @param array $releases The releases
@@ -58,18 +45,9 @@ class Releasr_CliCommand_List implements Releasr_CliCommand_Interface
      */
     private function _generateNumberOfReleasesMessage($releases, $projectName)
     { 
-        $message = '';
-        
-        // No releases, 1 release or X releases
-        $message .= 0==count($releases) ? 'No' : count($releases);
-        $message .= ' release';
-        if(count($releases) != 1) { $message.='s'; }
-        
+        $message = $this->_generateNumberOfItemsMessage(count($releases), 'release');
         $message .= ' found for "' . $projectName . '"';
-        
-        // colon at EOL if there is more to come
         if(count($releases)>0) { $message .= ':'; }
-        
         return $message . PHP_EOL;
     }
 
