@@ -33,7 +33,7 @@ class Releasr_CliCommand_Review extends Releasr_CliCommand_Abstract
          $message = $this->_generateNumberOfChangesMessage($changes, $projectName);
          
          foreach ($changes as $change) {
-             $message .= $change->user . ' -> ' . $change->comment . PHP_EOL;
+             $message .= $change->author . ' -> ' . $change->comment . PHP_EOL;
          }
          
          return $message;

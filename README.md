@@ -16,7 +16,7 @@ Displays list of release tags for that project
 
     releasr review myproject
     
-(not implemented) Shows the log of changes on trunk, and any that have happened on the branch
+Shows the log of changes on trunk, and any that have happened on the branch
 
     releasr prepare myproject
     

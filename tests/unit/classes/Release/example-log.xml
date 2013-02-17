@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<log>
+    <logentry revision="2345">
+        <author>tom</author>
+        <date>2013-02-14T12:27:44.220994Z</date>
+        <msg>Late Message</msg>
+    </logentry>
+    <logentry revision="1234">
+        <author>dick</author>
+        <date>2013-02-13T17:36:13.812984Z</date>
+        <msg>Early message</msg>
+    </logentry>
+</log>

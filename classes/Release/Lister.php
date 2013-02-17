@@ -5,22 +5,21 @@
 *
 * @package Releasr
 */
-class Releasr_Release_Lister
+class Releasr_Release_Lister extends Releasr_Release_Abstract
 {
-    
+
     /**
-     * Configuration of how the target repository is set up
+     * Gets the most recent release for a particular project
+     *
+     * @param string $projectName
+     * @return Releasr_Repo_Release
      */
-    private $_repoConfig;
-    
-    /**
-     * @param array $repoConfig Configuration of how to generate URLs to the specified repo
-     */
-    public function __construct($repoConfig)
+    public function getMostRecentRelease($projectName)
     {
-        $this->_repoConfig = $repoConfig;
+        $releases = $this->listReleases($projectName);
+        return end($releases);
     }
-    
+
     /**
      * Gets the list of releases for the named project
      *
@@ -29,32 +28,19 @@ class Releasr_Release_Lister
      */
     public function listReleases($projectName)
     {
-        $releasesUrl = $this->_getReleaseBranchesUrlForProject($projectName);
+        $releasesUrl = $this->_repoConfig->getBranchUrlForProject($projectName);
         $xmlResponse = $this->_doShellCommand('svn list --xml '.$releasesUrl);
-        return $this->_parseXmlIntoReleaseObjects($xmlResponse);
+        return $this->_parseXmlIntoReleaseObjects($xmlResponse, $releasesUrl);
     }
-    
+
     /**
-     * Works out the release branches URL for a particular project
+     * Builds Release objects based on the response from the repository
      *
-     * @param string $projectName The name of the project
-     * @return string the URL of the release branch
-     */
-    private function _getReleaseBranchesUrlForProject($projectName)
-    {
-        if (!array_key_exists('releases_url', $this->_repoConfig)) {
-            throw new Releasr_Exception_Config('Missing required config option "releases_url"');
-        }
-        
-        $urlScheme = $this->_repoConfig['releases_url'];
-        return str_replace('%PROJECT%', $projectName, $urlScheme);
-    }
-    
-    /**
-     * @param string Xml svn list response from the repository
+     * @param string $xmlResponse Xml svn list response from the repository
+     * @param string $relseasesUrl The base URL for branches in this repo
      * @return array Releasr_Repo_Release objects
      */
-    private function _parseXmlIntoReleaseObjects($xmlResponse)
+    private function _parseXmlIntoReleaseObjects($xmlResponse, $releasesUrl)
     {        
         if (!$xml = @simplexml_load_string($xmlResponse)) {
             throw new Releasr_Exception_Repo('Could not parse response from repository');
@@ -64,19 +50,9 @@ class Releasr_Release_Lister
         foreach ($xml->list->entry as $entry) {
             $release = new Releasr_Repo_Release;
             $release->name = (string)$entry->name;
+            $release->url = $releasesUrl . '/' . (string)$entry->name;
             $releases[] = $release;
         }
         return $releases;
-    }
-    
-    /**
-     * Does an actual shell command
-     *
-     * @param string $command The command to run
-     * @return string The output of the command
-     */
-    protected function _doShellCommand($command)
-    {
-        return shell_exec($command);
     }
 }

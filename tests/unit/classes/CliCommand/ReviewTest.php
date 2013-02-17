@@ -26,7 +26,7 @@ class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
     {
         $this->_validArguments = array('myproject');
         
-        $this->_releaseReviewer = $this->getMock('Releasr_Release_Reviewer');
+        $this->_releaseReviewer = $this->getMock('Releasr_Release_Reviewer', array(), array(), '', FALSE);
         $this->_command = new Releasr_CliCommand_Review($this->_releaseReviewer);
     }
     
@@ -77,11 +77,11 @@ class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
     public function testReviewOutputsListOfTrunkChanges()
     {
         $change1 = $this->getMock('Releasr_Repo_Change');
-        $change1->user = 'user1';
+        $change1->author = 'user1';
         $change1->comment = 'comment1';
         
         $change2 = $this->getMock('Releasr_Repo_Change');
-        $change2->user = 'user2';
+        $change2->author = 'user2';
         $change2->comment = 'comment2';
 
         $this->_releaseReviewer->expects($this->any())
