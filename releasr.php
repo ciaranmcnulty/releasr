@@ -13,10 +13,12 @@ try{
 
 	$lister = new Releasr_Release_Lister($repoConfig);
 	$reviewer = new Releasr_Release_Reviewer($repoConfig, $lister);
+	$preparer = new Releasr_Release_Preparer($repoConfig);
 
     $runner = new Releasr_CliCommand_Main(array(
     	'list' => new Releasr_CliCommand_List($lister),
-    	'review' => new Releasr_CliCommand_Review($reviewer)
+    	'review' => new Releasr_CliCommand_Review($reviewer),
+		'prepare' => new Releasr_CliCommand_Prepare($preparer)
     ));
 
     echo $runner->run($arguments), PHP_EOL;

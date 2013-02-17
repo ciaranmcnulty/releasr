@@ -18,9 +18,16 @@ Displays list of release tags for that project
     
 Shows the log of changes on trunk, and any that have happened on the branch
 
-    releasr prepare myproject
+    releasr prepare myproject <branchname>
     
-(not implemented) Makes a new release tag in the configure naming scheme, sorts out any externals
+Makes a new release tag in the configured naming scheme
+
+Future potential additions
+--------------------------
+
+* A way to store user credentials securely
+* Configurable branch name generation
+* Freezing of externals on creation of a release branch
 
 Why not use Git?
 ----------------
