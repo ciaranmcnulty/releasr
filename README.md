@@ -10,15 +10,15 @@ A simple release tool for those using SVN who want to have:
 Example workflow
 ----------------
 
-    releasr list myproject
+    releasr list *myproject*
 
 Displays list of release tags for that project
 
-    releasr review myproject
+    releasr review *myproject*
 
 Shows the log of changes on trunk, and any that have happened on the branch
 
-    releasr prepare myproject <branchname>
+    releasr prepare *projectname* *branchname*
 
 Makes a new release tag in the configured naming scheme
 
