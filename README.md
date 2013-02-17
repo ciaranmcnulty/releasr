@@ -11,15 +11,15 @@ Example workflow
 ----------------
 
     releasr list myproject
-    
+
 Displays list of release tags for that project
 
     releasr review myproject
-    
+
 Shows the log of changes on trunk, and any that have happened on the branch
 
     releasr prepare myproject <branchname>
-    
+
 Makes a new release tag in the configured naming scheme
 
 Future potential additions

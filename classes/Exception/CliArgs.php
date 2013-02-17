@@ -7,5 +7,5 @@
 */
 class Releasr_Exception_CliArgs extends Exception
 {
-    
+
 }

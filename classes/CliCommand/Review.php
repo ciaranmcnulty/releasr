@@ -11,7 +11,7 @@ class Releasr_CliCommand_Review extends Releasr_CliCommand_Abstract
      * @var Releasr_Release_Reviewer
      */
     private $_reviewer;
-    
+
     /**
      * @var Releasr_Release_Reviewer The reviewer to use to talk to the repo
      */
@@ -47,7 +47,7 @@ class Releasr_CliCommand_Review extends Releasr_CliCommand_Abstract
      * @return string Something like '8 releases found for MyProject'
      */
     private function _generateNumberOfChangesMessage($changes, $projectName)
-    { 
+    {
         $message = $this->_generateNumberOfItemsMessage(count($changes), 'change');
         $message .= ' found';
         if(count($changes)>0) { $message .= ':'; }

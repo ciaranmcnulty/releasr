@@ -17,7 +17,7 @@ class Releasr_Release_Preparer extends Releasr_Release_Abstract
     {
         $trunkUrl = $this->_repoConfig->getTrunkUrlForProject($projectName);
         $branchUrl = $this->_repoConfig->getBranchUrlForProject($projectName) . '/' . $branchName;
-        
+
         $this->_doShellCommand('svn copy ' . $trunkUrl . ' ' . $branchUrl . ' -m "Creating release branch"');
     }
 }

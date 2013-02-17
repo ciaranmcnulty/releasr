@@ -13,7 +13,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
      * e.g. array('name' => $command) where $command instance of Releasr_CliCommand_Interface
      */
     private $_commands;
-    
+
     /**
      * @param array $commands The configured commands in the system
      */
@@ -21,7 +21,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
     {
         $this->_commands = $commands;
     }
-    
+
     /**
      * Invokes the appropriate command based on the arguments provided
      *
@@ -29,14 +29,14 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
      * @throws Releasr_Exception_CliArgs
      */
     public function run($arguments)
-    {        
+    {
         $commandName = $this->_getCommandNameFromArgs($arguments);
         $commandObj = $this->_getCommandObjFromConfig($commandName);
         
         $commandArguments = array_slice($arguments, 1);
         return $commandObj->run($commandArguments);
     }
-    
+
     /**
      * Works out which command name is provided in the arguments
      *
@@ -48,7 +48,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
         if (0 == count($arguments)) {
             throw new Releasr_Exception_CliArgs('No command name provided');
         }
-        return $arguments[0];      
+        return $arguments[0];
     }
     
     /**
@@ -58,7 +58,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
      * @return Releasr_CliCommand_Interface An invokable command
      */
     private function _getCommandObjFromConfig($commandName)
-    {    
+    {
         if (!array_key_exists($commandName, $this->_commands)) {
             throw new Releasr_Exception_CliArgs('Provided command ' . $commandName . ' not recognised');
         }

@@ -11,7 +11,7 @@ class Releasr_Repo_Config
      * @var array the Repository config
      */
     private $_config;
-    
+
     /**
      * @param string $configFile The file specifying the repo setup
      */ 

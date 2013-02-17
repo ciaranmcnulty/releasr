@@ -7,7 +7,6 @@
  */
 class Releasr_Repo_Change
 {
-    
     /**
      * @var string The name of the author
      */
@@ -17,5 +16,4 @@ class Releasr_Repo_Change
     * @var string The commit message
     */
     public $comment;
-    
 }

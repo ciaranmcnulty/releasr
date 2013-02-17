@@ -45,7 +45,7 @@ class Releasr_Release_Lister extends Releasr_Release_Abstract
         if (!$xml = @simplexml_load_string($xmlResponse)) {
             throw new Releasr_Exception_Repo('Could not parse response from repository');
         }
-        
+
         $releases = array();
         foreach ($xml->list->entry as $entry) {
             $release = new Releasr_Repo_Release;

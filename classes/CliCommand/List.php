@@ -11,7 +11,7 @@ class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
      * @var Releasr_Release_Lister
      */
     private $_releaseLister;
-    
+
     /**
      * @param Releasr_Release_Lister $releaseLister The object that is used to list the releases
      */
@@ -19,7 +19,7 @@ class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
     {
         $this->_releaseLister = $releaseLister;
     }
-    
+
     /**
      * Gets the list for the current project and formats it for CLI
      *
@@ -47,7 +47,7 @@ class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
     { 
         $message = $this->_generateNumberOfItemsMessage(count($releases), 'release');
         $message .= ' found for "' . $projectName . '"';
-        if(count($releases)>0) { $message .= ':'; }
+        if (count($releases)>0) { $message .= ':'; }
         return $message . PHP_EOL;
     }
 
