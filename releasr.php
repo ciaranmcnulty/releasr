@@ -7,7 +7,7 @@
 */
 
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__)));
-require_once('includes.php');
+require_once('classes/includes.php');
 
 $config = dirname(realpath(__FILE__)).'/config/releasr.conf';
 
