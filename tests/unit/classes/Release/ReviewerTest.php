@@ -18,7 +18,15 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     public function setUp()
     {
         $this->_config = $this->getMock('Releasr_Repo_Config', array(), array(), '', FALSE);
+
+        $release = $this->getMock('Releasr_Repo_Release');
+        $release->url = 'http://branch-url';
+        
         $this->_lister = $this->getMock('Releasr_Release_Lister', array(), array(), '', FALSE);
+        $this->_lister->expects($this->any())
+            ->method('getMostRecentRelease')
+            ->will($this->returnValue($release));
+        
         $this->_reviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), array($this->_config, $this->_lister));  
 
         $this->_reviewer->expects($this->any())
@@ -37,13 +45,6 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     
     public function testReviewerLogsLatestReleaseBranchUsingCorrectUrlAndOptions()
     {   
-        $release = $this->getMock('Releasr_Repo_Release');
-        $release->url = 'http://branch-url';
-        
-        $this->_lister->expects($this->any())
-            ->method('getMostRecentRelease')
-            ->will($this->returnValue($release));
-        
         $this->_reviewer->expects($this->at(0))
             ->method('_doShellCommand')
             ->with(
@@ -51,7 +52,7 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
                     $this->stringContains('svn log'),
                     $this->stringContains('--xml'),
                     $this->stringContains('--stop-on-copy'),
-                    $this->stringContains($release->url)
+                    $this->stringContains('http://branch-url')
                 )
             );
         
