@@ -4,30 +4,29 @@ A simple release tool for those using SVN who want to have:
 2. A set of release tags
 3. The ability to see what's happened on trunk since the last tag was made
 4. The ability to prepare a new release tag with a single command
-5. Some sort of deployment (maybe) 
-6. Multiple projects in the same repo with the above setup
+5. Multiple projects in the same repo with the above setup
 
 Example workflow
 ----------------
 
-    releasr list *myproject*
+    releasr list [myproject]
 
 Displays list of release tags for that project
 
-    releasr review *myproject*
+    releasr review [myproject]
 
 Shows the log of changes on trunk, and any that have happened on the branch
 
-    releasr prepare *projectname* *branchname*
+    releasr prepare [projectname] [branchname]
 
 Makes a new release tag in the configured naming scheme
 
 Future potential additions
 --------------------------
 
-* A way to store user credentials securely
 * Configurable branch name generation
 * Freezing of externals on creation of a release branch
+* Some sort of pull / deployment?
 
 Why not use Git?
 ----------------
