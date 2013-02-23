@@ -65,4 +65,15 @@ class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
         }
         return $message;
     }
+
+    /**
+     * Gets a usage message string
+     *
+     * @return string The usage message for this command
+     */
+     public function getUsageMessage()
+     {
+         $usage = 'releasr list [projectname]';
+         return $usage;
+     }
 }

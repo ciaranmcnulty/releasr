@@ -53,4 +53,15 @@ class Releasr_CliCommand_Review extends Releasr_CliCommand_Abstract
         if(count($changes)>0) { $message .= ':'; }
         return $message . PHP_EOL;
     }
+
+    /**
+     * Gets a usage message string
+     *
+     * @return string The usage message for this command
+     */
+     public function getUsageMessage()
+     {
+         $usage = 'releasr review [projectname]';
+         return $usage;
+     }
 }

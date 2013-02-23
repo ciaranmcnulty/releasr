@@ -48,4 +48,15 @@ class Releasr_CliCommand_Prepare extends Releasr_CliCommand_Abstract
         }
         return $arguments[1];
     }
+
+    /**
+     * Gets a usage message string
+     *
+     * @return string The usage message for this command
+     */
+     public function getUsageMessage()
+     {
+         $usage = 'releasr prepare [projectname] [branchname]';
+         return $usage;
+     }
 }

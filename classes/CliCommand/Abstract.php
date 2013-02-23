@@ -16,11 +16,10 @@ abstract class Releasr_CliCommand_Abstract implements Releasr_CliCommand_Interfa
     protected function _getProjectNameFromArguments($arguments)
     {
         if (0==count($arguments)) {
-            throw new Releasr_Exception_CliArgs('No project name specified');
+            throw new Releasr_Exception_CliArgs('No project name specified', 0, NULL, $this);
         }
         return $arguments[0];
     }
-    
 
     /**
      * Generates a sensible message about how many items are in a list there are

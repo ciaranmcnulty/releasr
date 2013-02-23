@@ -13,4 +13,11 @@ interface Releasr_CliCommand_Interface
      * @param array $arguments Command line arguments for the relevant command
      */ 
     public function run($arguments);
+    
+    /**
+     * Gets a usage message string
+     *
+     * @return string The usage message for this command
+     */
+    public function getUsageMessage();
 }

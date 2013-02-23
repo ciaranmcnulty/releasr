@@ -46,7 +46,7 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
     private function _getCommandNameFromArgs($arguments)
     {
         if (0 == count($arguments)) {
-            throw new Releasr_Exception_CliArgs('No command name provided');
+            throw new Releasr_Exception_CliArgs('No command name provided', 0, NULL, $this);
         }
         return $arguments[0];
     }
@@ -60,8 +60,19 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
     private function _getCommandObjFromConfig($commandName)
     {
         if (!array_key_exists($commandName, $this->_commands)) {
-            throw new Releasr_Exception_CliArgs('Provided command ' . $commandName . ' not recognised');
+            throw new Releasr_Exception_CliArgs('Provided command "' . $commandName . '" not recognised', 0, NULL, $this);
         }
         return $this->_commands[$commandName];
+    }
+    /**
+     * Gets a usage message string
+     *
+     * @return string The usage message for this command
+     */    
+    public function getUsageMessage()
+    {
+        $usage = 'releasr [command] [options]' . PHP_EOL;
+        $usage .= 'Available commands: "' . join('", "', array_keys($this->_commands)) . '"';
+        return $usage;
     }
 }
