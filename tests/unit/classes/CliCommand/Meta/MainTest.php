@@ -4,7 +4,7 @@
 * @package Releasr
 * @subpackage Tests
 */
-class Releasr_CliCommand_MainTest extends PHPUnit_Framework_Testcase
+class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
 {
     
     /**
@@ -27,7 +27,7 @@ class Releasr_CliCommand_MainTest extends PHPUnit_Framework_Testcase
             'known_command' => $this->_mockCommand
         );
         
-        $this->_command = new Releasr_CliCommand_Main($commandConfig);
+        $this->_command = new Releasr_CliCommand_Meta_Main($commandConfig);
     }
     
     /**

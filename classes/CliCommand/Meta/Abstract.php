@@ -1,18 +1,19 @@
 <?php
 
 /**
-* Class that decides which command to run and then invokes it based on arguments provided
+* Abstract class for commands that deal with other commands (e.g. runner, help)
 * 
 * @package Releasr
 */
-class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
+abstract class Releasr_CliCommand_Meta_Abstract implements Releasr_CliCommand_Interface
 {
+    
     /** 
-     * The array of commands that the runner knows about
+     * The array of commands that this command knows about
      *
      * e.g. array('name' => $command) where $command instance of Releasr_CliCommand_Interface
      */
-    private $_commands;
+    protected $_commands;
 
     /**
      * @param array $commands The configured commands in the system
@@ -21,20 +22,17 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
     {
         $this->_commands = $commands;
     }
-
+    
     /**
-     * Invokes the appropriate command based on the arguments provided
+     * Gets a runnable command based on the arguments and the commands specified in config
      *
-     * @param array $arguments The arguments provided to the CLI, minus the executable name
-     * @throws Releasr_Exception_CliArgs
+     * @param array The arguments provided to the runner
+     * @return Releasr_CliCommand_Interface An invokable command
      */
-    public function run($arguments)
+    protected function _getCommandFromArguments($arguments)
     {
-        $commandName = $this->_getCommandNameFromArgs($arguments);
-        $commandObj = $this->_getCommandObjFromConfig($commandName);
-        
-        $commandArguments = array_slice($arguments, 1);
-        return $commandObj->run($commandArguments);
+        $commandName = $this->_getCommandNameFromArguments($arguments);
+        return $this->_getCommandObjFromConfig($commandName);
     }
 
     /**
@@ -43,36 +41,25 @@ class Releasr_CliCommand_Main implements Releasr_CliCommand_Interface
      * @param array The arguments provided to the runner
      * @return string The name of the command to invoke
      */
-    private function _getCommandNameFromArgs($arguments)
+    protected function _getCommandNameFromArguments($arguments)
     {
         if (0 == count($arguments)) {
             throw new Releasr_Exception_CliArgs('No command name provided', 0, NULL, $this);
         }
         return $arguments[0];
     }
-    
+
     /**
      * Retrieves the named command from the configured list
      *
      * @param string $commandName The name of the command to be fetched
      * @return Releasr_CliCommand_Interface An invokable command
      */
-    private function _getCommandObjFromConfig($commandName)
+    protected function _getCommandObjFromConfig($commandName)
     {
         if (!array_key_exists($commandName, $this->_commands)) {
             throw new Releasr_Exception_CliArgs('Provided command "' . $commandName . '" not recognised', 0, NULL, $this);
         }
         return $this->_commands[$commandName];
-    }
-    /**
-     * Gets a usage message string
-     *
-     * @return string The usage message for this command
-     */    
-    public function getUsageMessage()
-    {
-        $usage = 'releasr [command] [options]' . PHP_EOL;
-        $usage .= 'Available commands: "' . join('", "', array_keys($this->_commands)) . '"';
-        return $usage;
     }
 }

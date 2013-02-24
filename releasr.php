@@ -24,11 +24,15 @@ try {
     $reviewer = new Releasr_Release_Reviewer($repoConfig, $lister);
     $preparer = new Releasr_Release_Preparer($repoConfig);
 
-    $runner = new Releasr_CliCommand_Main(array(
-        'list' => new Releasr_CliCommand_List($lister),
-        'review' => new Releasr_CliCommand_Review($reviewer),
-        'prepare' => new Releasr_CliCommand_Prepare($preparer)
-    ));
+    $commands = array(
+        'list' => new Releasr_CliCommand_Project_List($lister),
+        'review' => new Releasr_CliCommand_Project_Review($reviewer),
+        'prepare' => new Releasr_CliCommand_Project_Prepare($preparer)
+    );
+
+    $runner = new Releasr_CliCommand_Meta_Main(array_merge($commands, array(
+        'help' => new Releasr_CliCommand_Meta_Help($commands)
+    )));
 
     echo $runner->run($arguments), PHP_EOL;
 }

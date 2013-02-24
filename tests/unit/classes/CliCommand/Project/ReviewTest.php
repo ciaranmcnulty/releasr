@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
+class Releasr_CliCommand_Project_ReviewTest extends PHPUnit_Framework_Testcase
 {
     /**
     * @var Releasr_CliCommand_Review
@@ -27,7 +27,7 @@ class Releasr_CliCommand_ReviewTest extends PHPUnit_Framework_Testcase
         $this->_validArguments = array('myproject');
         
         $this->_releaseReviewer = $this->getMock('Releasr_Release_Reviewer', array(), array(), '', FALSE);
-        $this->_command = new Releasr_CliCommand_Review($this->_releaseReviewer);
+        $this->_command = new Releasr_CliCommand_Project_Review($this->_releaseReviewer);
     }
     
     /**

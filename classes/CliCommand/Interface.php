@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Interface for runnable commands
+* Interface for runnable commands. By default they must be runnable and have some usage info
 *
 * @package Releasr
 */
@@ -13,6 +13,7 @@ interface Releasr_CliCommand_Interface
      * @param array $arguments Command line arguments for the relevant command
      */ 
     public function run($arguments);
+
     
     /**
      * Gets a usage message string

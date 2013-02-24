@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-class Releasr_CliCommand_List extends Releasr_CliCommand_Abstract
+class Releasr_CliCommand_Project_List extends Releasr_CliCommand_Project_Abstract
 {
     /**
      * @var Releasr_Release_Lister

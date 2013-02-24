@@ -4,7 +4,7 @@
  * CLI command that outputs a list of releases on a particular branch
  * @package Releasr
  */
-class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
+class Releasr_CliCommand_Project_ListTest extends PHPUnit_Framework_Testcase
 {
     
     /**
@@ -27,7 +27,7 @@ class Releasr_CliCommand_ListTest extends PHPUnit_Framework_Testcase
         $this->_validArguments = array('myproject');
         
         $this->_releaseLister = $this->getMock('Releasr_Release_Lister', array(), array(), '', FALSE);
-        $this->_command = new Releasr_CliCommand_List($this->_releaseLister);
+        $this->_command = new Releasr_CliCommand_Project_List($this->_releaseLister);
     }
     
     /**
