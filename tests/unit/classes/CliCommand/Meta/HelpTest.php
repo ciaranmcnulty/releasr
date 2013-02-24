@@ -4,18 +4,8 @@
  * CLI command that outputs a help message for each command
  * @package Releasr
  */
-class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
+class Releasr_CliCommand_Meta_HelpTest extends Releasr_CliCommand_Meta_AbstractTest
 {
-    /**
-     * @var Releasr_CliCommand_Help
-     */
-    private $_command;
-
-    /**
-     * @var Releasr_CliCommand_Interface
-     */
-    private $_mockCommand;
-
     /**
      * @var Releasr_CliCommand_DocumentedInterface
      */
@@ -23,7 +13,7 @@ class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->_mockCommand = $this->getMock('Releasr_CliCommand_Interface');
+        parent::setUp();
         $this->_mockDocumentedCommand = $this->getMock('Releasr_CliCommand_DocumentedInterface');
         $commands = array(
             'undocumentedCommand'=>$this->_mockCommand,
@@ -72,7 +62,7 @@ class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
         
         $this->assertContains('Usage: %USAGE%', $output);
     }
-    
+
     public function testHelpGetsHelpMessageForDocumentedCommand()
     {
         $arguments = array('documentedCommand');

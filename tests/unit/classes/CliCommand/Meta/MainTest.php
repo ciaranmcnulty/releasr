@@ -4,24 +4,11 @@
 * @package Releasr
 * @subpackage Tests
 */
-class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
+class Releasr_CliCommand_Meta_MainTest extends Releasr_CliCommand_Meta_AbstractTest
 {
-    
-    /**
-     * @var Releasr_CliCommand_Interface
-     */
-    private $_mockCommand;
-    
-    /**
-     * The concrete class under test
-     *
-     * @var Releasr_CliCommand_Main
-     */ 
-    private $_command;
-    
     public function setUp()
     {
-        $this->_mockCommand = $this->getMock('Releasr_CliCommand_Interface');
+        parent::setUp();
         
         $commandConfig = array(
             'known_command' => $this->_mockCommand
@@ -29,7 +16,7 @@ class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
         
         $this->_command = new Releasr_CliCommand_Meta_Main($commandConfig);
     }
-    
+
     /**
     * @expectedException Releasr_Exception_CliArgs
     */
@@ -39,7 +26,7 @@ class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
         
         $this->_command->run($arguments);
     }
-    
+
     /**
     * @expectedException Releasr_Exception_CliArgs
     */
@@ -49,7 +36,7 @@ class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
         
         $this->_command->run($arguments);
     }
-    
+
     public function testCommandInvokesRunOnRegisteredCommandWhenRecognisedNameIsProvided()
     {
         $arguments = array('known_command');
@@ -58,7 +45,7 @@ class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
         
         $this->_command->run($arguments);
     }
-    
+
     public function testCommandInvokesRegisteredCommandWithSubsetOfArguments()
     {
         $arguments = array('known_command', 'a', 'b', 'c');
@@ -69,7 +56,7 @@ class Releasr_CliCommand_Meta_MainTest extends PHPUnit_Framework_Testcase
 
         $this->_command->run($arguments);   
     }
-    
+
     public function testCommandReturnsOutputOfInvokedRegisteredCommand()
     {
         $arguments = array('known_command');
