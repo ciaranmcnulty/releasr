@@ -33,6 +33,13 @@ class Releasr_CliCommand_Meta_Help extends Releasr_CliCommand_Meta_Abstract
     {
         $usage = 'releasr help [command]' . PHP_EOL;
         $usage .= 'Available commands: "' . join('", "', array_keys($this->_commands)) . '"';
+        foreach ($this->_commands as $key => $command) {
+            if ($command instanceof Releasr_CliCommand_DocumentedInterface) {
+                $usage .= PHP_EOL;
+                $usage .= (PHP_EOL . $key . ': ' . PHP_EOL);
+                $usage .= ("\t" . $command->getHelpMessage());
+            }
+        }
         return $usage;
     }
 }
