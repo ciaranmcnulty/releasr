@@ -8,7 +8,7 @@
 class Releasr_CliCommand_Project_PrepareTest extends PHPUnit_Framework_Testcase
 {
     /**
-    * @var Releasr_CliCommand_Prepare
+    * @var Releasr_CliCommand_Project_Prepare
     */
     private $_command;
     

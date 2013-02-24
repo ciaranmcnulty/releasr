@@ -8,7 +8,7 @@ class Releasr_CliCommand_Project_ListTest extends PHPUnit_Framework_Testcase
 {
     
     /**
-     * @var Releasr_CliCommand_List The list command under test
+     * @var Releasr_CliCommand_Project_List The list command under test
      */
     private $_command;
     

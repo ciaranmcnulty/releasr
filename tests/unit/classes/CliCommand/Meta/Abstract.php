@@ -8,7 +8,7 @@
 abstract class Releasr_CliCommand_Meta_AbstractTest extends PHPUnit_Framework_Testcase
 {
     /**
-     * @var Releasr_CliCommand_Help
+     * @var Releasr_CliCommand_Meta_Help
      */
     protected $_command;
 

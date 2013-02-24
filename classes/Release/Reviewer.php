@@ -13,12 +13,12 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
     private $_lister;
 
     /**
-     * @param array $repoConfig The config of the repository
+     * @param array $urlResolver The config of the repository
      * @param Releasr_Release_Lister $lister The object to use to list releases
      */
-    public function __construct($repoConfig, $lister)
+    public function __construct($urlResolver, $lister)
     {
-        parent::__construct($repoConfig);
+        parent::__construct($urlResolver);
         $this->_lister = $lister;
     }
 
@@ -76,7 +76,7 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
      */
     private function _getRecentChangeDataFromTrunk($projectName, $revision)
     {
-        $trunkUrl = $this->_repoConfig->getTrunkUrlForProject($projectName);
+        $trunkUrl = $this->_urlResolver->getTrunkUrlForProject($projectName);
         $xmlResponse = $this->_doShellCommand('svn log --xml -r' . $revision . ':HEAD ' . $trunkUrl);
         return $xmlResponse;
     }
