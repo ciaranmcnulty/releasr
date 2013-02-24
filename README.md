@@ -43,15 +43,22 @@ Example workflow
 
 Open terminal and type:
 
-    releasr list myproject
+    > releasr list myproject
+    2 releases found for "myproject":
+    -> 2013-06-01
+    -> 2013-06-20
     
 Check the list of branches on that project to check the branch name format
 
-    releasr review myproject
-    
+    > releasr review myproject
+    2 changes found:
+    ciaranm -> [T-12324] Fixed a bug with the thing
+    ciaranm -> [T-24244] Added a new feature
+
 Review the list of changes since the last branch was made and check there aren't any nasty surprises
 
-    releasr prepare myproject 2013-06-28
+    > releasr prepare myproject 2013-06-28
+    Successfully created branch 2013-06-28
 
 Make a new release tag for that project, then go off and check that out somewhere / svn switch your servers.
 
