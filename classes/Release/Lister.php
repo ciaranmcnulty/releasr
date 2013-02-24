@@ -51,8 +51,20 @@ class Releasr_Release_Lister extends Releasr_Release_Abstract
             $release = new Releasr_Repo_Release;
             $release->name = (string)$entry->name;
             $release->url = $releasesUrl . '/' . (string)$entry->name;
+            $release->date = new DateTime((string)$entry->commit->date);
             $releases[] = $release;
         }
+        usort($releases, array($this, '_sortByDate'));
         return $releases;
+    }
+
+    /**
+     * @param DateTime $a
+     * @param DateTime $b
+     * @return integer comparison of the two dates
+     */
+    private function _sortByDate($a, $b)
+    {
+        return $a->date->format('U') - $b->date->format('U');
     }
 }

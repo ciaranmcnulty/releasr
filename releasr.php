@@ -6,6 +6,8 @@
 * @package Releasr
 */
 
+date_default_timezone_set('Europe/London');
+
 try {
     $runner = require_once(dirname(__FILE__) . '/configure.php');
     $arguments = array_slice($_SERVER['argv'], 1);

@@ -13,8 +13,13 @@ class Releasr_Repo_Release
     public $name;
 
     /**
-    * @var string The full URL of the release
-    */
+     * @var string The full URL of the release
+     */
     public $url;
+
+    /**
+     * @var DateTime The date the release was created
+     */
+    public $date;
 
 }

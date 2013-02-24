@@ -96,12 +96,12 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
         $this->assertAttributeSame('http://example/myproject/releases/release-1234', 'url', $releases[0]);
     }
 
-    public function testGetMostRecentReleaseReturnsAReleaseObjectWithCorrectProperties()
+    public function testGetMostRecentReleaseReturnsTheMostRecentReleaseByDate()
     {
         $release = $this->_lister->getMostRecentRelease('myproject');
 
         $this->assertInstanceOf('Releasr_Repo_Release', $release);
-        $this->assertAttributeSame('release-3456', 'name', $release);
+        $this->assertAttributeSame('release-2345', 'name', $release);
     }
 
     /**
