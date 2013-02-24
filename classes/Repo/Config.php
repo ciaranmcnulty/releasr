@@ -13,11 +13,21 @@ class Releasr_Repo_Config
     private $_config;
 
     /**
-     * @param string $configFile The file specifying the repo setup
+     * @param array $configs The file locations to look in for the repo settings
      */ 
-    public function __construct($configFile)
+    public function __construct($configs)
     {
-        $this->_config = $this->_doParseIniFile($configFile);
+        foreach ($configs as $configFile) {
+            if (FALSE !== $config = $this->_doParseIniFile($configFile)) {
+                $this->_config = $config;
+                break;
+            }
+        }
+        
+        if (!is_array($this->_config)) {
+            $errorMessage = 'Could not find parsable config file in "' . join('", "', $configs) . '"';
+            throw new Releasr_Exception_Config($errorMessage);
+        }
     }
 
     /**
@@ -67,6 +77,6 @@ class Releasr_Repo_Config
      */
     protected function _doParseIniFile($configFile)
     {
-        return parse_ini_file($configFile);
+        return @parse_ini_file($configFile);
     }
 }

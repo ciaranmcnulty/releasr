@@ -9,12 +9,16 @@
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__)));
 require_once('classes/includes.php');
 
-$config = dirname(realpath(__FILE__)).'/config/releasr.conf';
+// search path for config files
+$configs = array(
+    '/etc/releasr.conf',
+    dirname(realpath(__FILE__)).'/config/releasr.conf',
+);
 
 try {
     $arguments = array_slice($_SERVER['argv'], 1);
 
-    $repoConfig = new Releasr_Repo_Config($config);
+    $repoConfig = new Releasr_Repo_Config($configs);
 
     $lister = new Releasr_Release_Lister($repoConfig);
     $reviewer = new Releasr_Release_Reviewer($repoConfig, $lister);
