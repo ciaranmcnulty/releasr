@@ -14,6 +14,8 @@ Available commands
 
 **list** - Shows all of the branches for a particular project
 
+**latest** - Shows details of the latest release for a particular project
+
 **review** - Shows all changes on a particular project since the last branch was created
 
 **prepare** - Creates a new release tag for a particular project

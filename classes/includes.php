@@ -22,6 +22,7 @@ require_once 'CliCommand/Meta/Main.php';
 require_once 'CliCommand/Meta/Help.php';
 require_once 'CliCommand/Project/Abstract.php';
 require_once 'CliCommand/Project/List.php';
+require_once 'CliCommand/Project/Latest.php';
 require_once 'CliCommand/Project/Review.php';
 require_once 'CliCommand/Project/Prepare.php';
 require_once 'Exception/CliArgs.php';

@@ -25,6 +25,7 @@ $preparer = new Releasr_Release_Preparer($urlResolver);
 // cli command wrappers
 $commands = array(
     'list' => new Releasr_CliCommand_Project_List($lister),
+    'latest' => new Releasr_CliCommand_Project_Latest($lister),
     'review' => new Releasr_CliCommand_Project_Review($reviewer),
     'prepare' => new Releasr_CliCommand_Project_Prepare($preparer)
 );
