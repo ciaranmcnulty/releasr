@@ -11,15 +11,15 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__
 require_once('classes/includes.php');
 
 // multiple paths for the repo config
-$repoConfig = new Releasr_Repo_Config(array(
+$urlResolver = new Releasr_Repo_UrlResolver(array(
     '/etc/releasr.conf',
     dirname(realpath(__FILE__)).'/config/releasr.conf',
 ));
 
 // objects that do the actual work
-$lister = new Releasr_Release_Lister($repoConfig);
-$reviewer = new Releasr_Release_Reviewer($repoConfig, $lister);
-$preparer = new Releasr_Release_Preparer($repoConfig);
+$lister = new Releasr_Release_Lister($urlResolver);
+$reviewer = new Releasr_Release_Reviewer($urlResolver, $lister);
+$preparer = new Releasr_Release_Preparer($urlResolver);
 
 // cli command wrappers
 $commands = array(

@@ -12,7 +12,7 @@ class Releasr_Release_PreparerTest extends PHPUnit_Framework_Testcase
     
     public function setUp()
     {
-        $config = $this->getMock('Releasr_Repo_Config', array(), array(), '', FALSE);
+        $config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
 
         $config->expects($this->any())
             ->method('getTrunkUrlForProject')

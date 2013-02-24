@@ -22,7 +22,7 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->_config = $this->getMock('Releasr_Repo_Config', array(), array(), '', FALSE);
+        $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
         
         $this->_lister = $this->getMock('Releasr_Release_Lister', array('_doShellCommand'), array($this->_config));
         $this->_exampleResponse = file_get_contents(dirname(__FILE__).'/example-listing.xml');

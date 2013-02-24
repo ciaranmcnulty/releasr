@@ -9,7 +9,7 @@
 
 require_once 'Repo/Release.php';
 require_once 'Repo/Change.php';
-require_once 'Repo/Config.php';
+require_once 'Repo/UrlResolver.php';
 require_once 'Release/Abstract.php';
 require_once 'Release/Lister.php';
 require_once 'Release/Reviewer.php';

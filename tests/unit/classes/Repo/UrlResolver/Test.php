@@ -3,7 +3,7 @@
 /**
  * @package Releasr
  */
-class Releasr_Repo_Config_Test extends PHPUnit_Framework_Testcase
+class Releasr_Repo_UrlResolver_Test extends PHPUnit_Framework_Testcase
 {
     
     /**
@@ -19,7 +19,7 @@ class Releasr_Repo_Config_Test extends PHPUnit_Framework_Testcase
         );
         
         // convoluted setup to get around the parse_ini_file in the constructor
-        $this->_repo = $this->getMock('Releasr_Repo_Config', array('_doParseIniFile'), array(), '', FALSE);
+        $this->_repo = $this->getMock('Releasr_Repo_UrlResolver', array('_doParseIniFile'), array(), '', FALSE);
         $this->_repo->expects($this->any())
             ->method('_doParseIniFile')
             ->will($this->returnValue($config));

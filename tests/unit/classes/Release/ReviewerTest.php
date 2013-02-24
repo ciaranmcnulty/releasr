@@ -17,7 +17,7 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->_config = $this->getMock('Releasr_Repo_Config', array(), array(), '', FALSE);
+        $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
 
         $release = $this->getMock('Releasr_Repo_Release');
         $release->url = 'http://branch-url';

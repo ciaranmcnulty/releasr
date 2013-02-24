@@ -3,14 +3,14 @@
 /**
  * @package Releasr
  */
-class Releasr_Repo_Config_BadConfigTest extends PHPUnit_Framework_Testcase
+class Releasr_Repo_UrlResolver_BadConfigTest extends PHPUnit_Framework_Testcase
 {
     
     public $_config;
     
     public function setUp()
     {
-        $this->_config = $this->getMock('Releasr_Repo_Config', array('_doParseIniFile'), array(), '', FALSE);
+        $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array('_doParseIniFile'), array(), '', FALSE);
         $this->_config ->expects($this->any())
             ->method('_doParseIniFile')
             ->will($this->returnValue(array()));

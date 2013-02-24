@@ -3,7 +3,7 @@
 /**
  * @package Releasr
  */
-class Releasr_Repo_Config_ArrayConfigTest extends PHPUnit_Framework_Testcase
+class Releasr_Repo_UrlResolver_ArrayConfigTest extends PHPUnit_Framework_Testcase
 {
     
     /**
@@ -13,7 +13,7 @@ class Releasr_Repo_Config_ArrayConfigTest extends PHPUnit_Framework_Testcase
     
     public function setUp()
     {
-        $this->_repo = $this->getMock('Releasr_Repo_Config', array('_doParseIniFile'), array(), '', FALSE);
+        $this->_repo = $this->getMock('Releasr_Repo_UrlResolver', array('_doParseIniFile'), array(), '', FALSE);
     }
 
     /**

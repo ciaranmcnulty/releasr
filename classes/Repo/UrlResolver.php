@@ -5,7 +5,7 @@
 *
 * @package Releasr
 */
-class Releasr_Repo_Config
+class Releasr_Repo_UrlResolver
 {
     /**
      * @var array the Repository config
