@@ -13,21 +13,11 @@ class Releasr_Repo_UrlResolver
     private $_config;
 
     /**
-     * @param array $configs The file locations to look in for the repo settings
+     * @param Releasr_Config $config The application config
      */ 
-    public function __construct($configs)
+    public function __construct($config)
     {
-        foreach ($configs as $configFile) {
-            if (FALSE !== $config = $this->_doParseIniFile($configFile)) {
-                $this->_config = $config;
-                break;
-            }
-        }
-        
-        if (!is_array($this->_config)) {
-            $errorMessage = 'Could not find parsable config file in "' . join('", "', $configs) . '"';
-            throw new Releasr_Exception_Config($errorMessage);
-        }
+        $this->_config = $config;
     }
 
     /**
@@ -61,22 +51,8 @@ class Releasr_Repo_UrlResolver
      */
     private function _getUrlFromPattern($projectName, $configKey)
     {
-        if (!array_key_exists($configKey, $this->_config)) {
-            throw new Releasr_Exception_Config('Missing required config option "releases_url"');
-        }
-
-        $urlScheme = $this->_config[$configKey];
+        $urlScheme = $this->_config->getRequiredOption($configKey);
         return str_replace('%PROJECT%', $projectName, $urlScheme);
     }
 
-    /**
-     * Reads the config file from disk 
-     *
-     * @param string $configFile The file specifying the repo setup
-     * @return array The config in the .ini file
-     */
-    protected function _doParseIniFile($configFile)
-    {
-        return @parse_ini_file($configFile);
-    }
 }
