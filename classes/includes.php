@@ -15,6 +15,7 @@ require_once 'Release/Lister.php';
 require_once 'Release/Reviewer.php';
 require_once 'Release/Preparer.php';
 require_once 'CliCommand/Interface.php';
+require_once 'CliCommand/DocumentedInterface.php';
 require_once 'CliCommand/Meta/Abstract.php';
 require_once 'CliCommand/Meta/Main.php';
 require_once 'CliCommand/Meta/Help.php';

@@ -5,22 +5,30 @@
  * @package Releasr
  */
 class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
-{    
-    
+{
     /**
      * @var Releasr_CliCommand_Help
      */
     private $_command;
-     
+
     /**
      * @var Releasr_CliCommand_Interface
      */
     private $_mockCommand;
-     
+
+    /**
+     * @var Releasr_CliCommand_DocumentedInterface
+     */
+    private $_mockDocumentedCommand;
+
     public function setUp()
     {
         $this->_mockCommand = $this->getMock('Releasr_CliCommand_Interface');
-        $commands = array('goodcommand'=>$this->_mockCommand);
+        $this->_mockDocumentedCommand = $this->getMock('Releasr_CliCommand_DocumentedInterface');
+        $commands = array(
+            'undocumentedCommand'=>$this->_mockCommand,
+            'documentedCommand' => $this->_mockDocumentedCommand
+        );
         $this->_command = new Releasr_CliCommand_Meta_Help($commands);
     }
 
@@ -44,7 +52,7 @@ class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
 
     public function testHelpGetsUsageInformationForSpecifiedCommand()
     {
-        $arguments = array('goodcommand');
+        $arguments = array('undocumentedCommand');
         
         $this->_mockCommand->expects($this->once())
             ->method('getUsageMessage');
@@ -54,7 +62,7 @@ class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
 
     public function testHelpOutputsUsageInformationForSpecifiedCommand()
     {
-        $arguments = array('goodcommand');
+        $arguments = array('undocumentedCommand');
 
         $this->_mockCommand->expects($this->any())
             ->method('getUsageMessage')
@@ -65,4 +73,26 @@ class Releasr_CliCommand_Meta_HelpTest extends PHPUnit_Framework_Testcase
         $this->assertContains('Usage: %USAGE%', $output);
     }
     
+    public function testHelpGetsHelpMessageForDocumentedCommand()
+    {
+        $arguments = array('documentedCommand');
+
+        $this->_mockDocumentedCommand->expects($this->once())
+            ->method('getHelpMessage');
+
+        $this->_command->run($arguments);
+    }
+
+    public function testHelpOutputsHelpMessageForDocumentedCommand()
+    {
+        $arguments = array('documentedCommand');
+
+        $this->_mockDocumentedCommand->expects($this->any())
+            ->method('getHelpMessage')
+            ->will($this->returnValue('%HELP%'));
+
+        $output = $this->_command->run($arguments);
+        
+        $this->assertContains('%HELP%', $output);
+    }
 }

@@ -64,4 +64,12 @@ class Releasr_CliCommand_Project_Review extends Releasr_CliCommand_Project_Abstr
          $usage = 'releasr review [projectname]';
          return $usage;
      }
+
+     /**
+      * Gets the help message for this command
+      */ 
+     public function getHelpMessage()
+     {
+         return 'Reviews all changes on trunk since the last branch was created';
+     }
 }

@@ -76,4 +76,13 @@ class Releasr_CliCommand_Project_List extends Releasr_CliCommand_Project_Abstrac
          $usage = 'releasr list [projectname]';
          return $usage;
      }
+
+     /**
+      * Gets the help message for this command
+      */ 
+     public function getHelpMessage()
+     {
+         return 'Lists all of the existing releases that have previously ' . 
+             'been created for the current project';
+     }
 }

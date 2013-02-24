@@ -5,7 +5,7 @@
  *
  * @package Releasr
  */
-abstract class Releasr_CliCommand_Project_Abstract implements Releasr_CliCommand_Interface
+abstract class Releasr_CliCommand_Project_Abstract implements Releasr_CliCommand_DocumentedInterface
 {
 
     /**

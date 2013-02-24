@@ -14,11 +14,11 @@ interface Releasr_CliCommand_Interface
      */ 
     public function run($arguments);
 
-    
     /**
      * Gets a usage message string
      *
      * @return string The usage message for this command
      */
     public function getUsageMessage();
+
 }

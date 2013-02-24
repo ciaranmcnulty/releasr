@@ -5,13 +5,13 @@
  *
  * @package Releasr
  */
-class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abstract 
+class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abstract
 {
     /**
      * @var Releasr_Release_Preparer
      */
     private $_preparer;
-    
+
     /**
      * @var Releasr_Release_Preparer The preparer to use to talk to the repo
      */
@@ -59,4 +59,12 @@ class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abst
          $usage = 'releasr prepare [projectname] [branchname]';
          return $usage;
      }
+
+      /**
+       * Gets the help message for this command
+       */ 
+      public function getHelpMessage()
+      {
+          return 'Prepares a new release, using the provided branch name';
+      }
 }

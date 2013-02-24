@@ -16,7 +16,12 @@ class Releasr_CliCommand_Meta_Help extends Releasr_CliCommand_Meta_Abstract
     public function run($arguments)
     {
         $command = $this->_getCommandFromArguments($arguments);
-        return 'Usage: ' . $command->getUsageMessage();
+        $message = '';
+        if ($command instanceof Releasr_CliCommand_DocumentedInterface) {
+            $message .= ($command->getHelpMessage() . PHP_EOL);
+        }
+        $message .=  ('Usage: ' . $command->getUsageMessage());
+        return $message;
     }
     
     /**
