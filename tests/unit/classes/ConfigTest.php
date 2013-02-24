@@ -92,4 +92,24 @@ class Releasr_ConfigTest extends PHPUnit_Framework_Testcase
 
         $this->_config->__construct(array('config1', 'config2'));
     }
+    
+    public function testGetProjectsReturnsNullIfConfigIsNotPresent()
+    {
+        $this->_constructConfigWithOptions(array());
+        
+        $projects = $this->_config->getProjects();
+        
+        $this->assertSame(NULL, $projects);
+    }
+    
+    public function testGetProjectsReturnsTrimmedArrayIfConfigIsSet()
+    {
+        $this->_constructConfigWithOptions(array(
+            'projects' => 'foo  , bar    , baz'
+        ));
+
+        $projects = $this->_config->getProjects();
+
+        $this->assertSame(array('foo', 'bar', 'baz'), $projects);
+    }
 }

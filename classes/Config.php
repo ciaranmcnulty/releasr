@@ -70,4 +70,19 @@ class Releasr_Config
     {
         return @parse_ini_file($configFile);
     }
+
+    /**
+     * Gets the list of configured projects
+     *
+     * @return array The list of projects
+     */
+    public function getProjects()
+    {
+        if (!$projects = $this->getOption('projects')) {
+            return NULL;
+        }
+        
+        $projects = split(',', $projects);
+        return array_map('trim', $projects);
+    }
 }

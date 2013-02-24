@@ -13,10 +13,12 @@ class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abst
     private $_preparer;
 
     /**
+     * @param Releasr_Config The application config
      * @var Releasr_Release_Preparer The preparer to use to talk to the repo
      */
-    public function __construct($preparer) 
+    public function __construct($config, $preparer) 
     {
+        parent::__construct($config);
         $this->_preparer = $preparer;
     }
 

@@ -13,10 +13,12 @@ class Releasr_CliCommand_Project_Latest extends Releasr_CliCommand_Project_Abstr
     private $_lister;
 
     /**
-    * @param Releasr_Release_Lister $lister The lister to use
-    */
-    public function __construct($lister)
+     * @param Releasr_Config The application config
+     * @param Releasr_Release_Lister $lister The lister to use
+     */
+    public function __construct($config, $lister)
     {
+        parent::__construct($config);
         $this->_lister = $lister;
     }
 

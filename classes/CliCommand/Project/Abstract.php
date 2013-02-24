@@ -7,6 +7,18 @@
  */
 abstract class Releasr_CliCommand_Project_Abstract implements Releasr_CliCommand_DocumentedInterface
 {
+    /**
+     * @var Releasr_Config
+     */
+    protected $_config;
+
+    /**
+     * @param Releasr_Config The application config
+     */
+    public function __construct($config)
+    {
+        $this->_config = $config;
+    }
 
     /**
      * Gets the name of the project from the provided arguments
@@ -18,7 +30,14 @@ abstract class Releasr_CliCommand_Project_Abstract implements Releasr_CliCommand
         if (0==count($arguments)) {
             throw new Releasr_Exception_CliArgs('No project name specified', 0, NULL, $this);
         }
-        return $arguments[0];
+        $project = $arguments[0];
+        if ($projects = $this->_config->getProjects()) {
+            if (!in_array($project, $projects)) {
+                $errorMessage = 'Invalid project name. Valid projects: "' . join('", "', $projects) . '"';
+                throw new Releasr_Exception_CliArgs($errorMessage, 0, NULL, $this);
+            }
+        }
+        return $project;
     }
 
     /**

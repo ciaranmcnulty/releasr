@@ -25,9 +25,10 @@ class Releasr_CliCommand_Project_ReviewTest extends PHPUnit_Framework_Testcase
     public function setUp()
     {
         $this->_validArguments = array('myproject');
-        
+
+        $config = $this->getMock('Releasr_Config', array(), array(), '', FALSE);
         $this->_releaseReviewer = $this->getMock('Releasr_Release_Reviewer', array(), array(), '', FALSE);
-        $this->_command = new Releasr_CliCommand_Project_Review($this->_releaseReviewer);
+        $this->_command = new Releasr_CliCommand_Project_Review($config, $this->_releaseReviewer);
     }
     
     /**
