@@ -31,8 +31,8 @@ class Releasr_Release_Preparer extends Releasr_Release_Abstract
      */
     private function _svnCopy($source, $destination, $message)
     {
-        $message = escapeshellarg($message);
-        $response = $this->_doShellCommand('svn copy ' . $source . ' ' . $destination . ' -m ' . $message);
+        $command =  'svn copy ' . escapeshellarg($source)  . ' ' . escapeshellarg($destination) . ' -m ' . escapeshellarg($message);
+        $response = $this->_doShellCommand($command);
         if (FALSE === strpos($response, 'Committed revision')) {
             throw new Releasr_Exception_Repo('Could not parse response from repository.');
         }        

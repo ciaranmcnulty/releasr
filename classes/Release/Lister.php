@@ -29,7 +29,7 @@ class Releasr_Release_Lister extends Releasr_Release_Abstract
     public function listReleases($projectName)
     {
         $releasesUrl = $this->_urlResolver->getBranchUrlForProject($projectName);
-        $xmlResponse = $this->_doShellCommand('svn list --xml '.$releasesUrl);
+        $xmlResponse = $this->_doShellCommand('svn list --xml ' . escapeshellarg($releasesUrl));
         return $this->_parseXmlIntoReleaseObjects($xmlResponse, $releasesUrl);
     }
 
