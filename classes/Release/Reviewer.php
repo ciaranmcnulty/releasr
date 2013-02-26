@@ -14,11 +14,12 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
 
     /**
      * @param array $urlResolver The config of the repository
+     * @param Releasr_Repo_Runner $svnRunner The object to use to execute SVN commands
      * @param Releasr_Release_Lister $lister The object to use to list releases
      */
-    public function __construct($urlResolver, $lister)
+    public function __construct($urlResolver, $svnRunner, $lister)
     {
-        parent::__construct($urlResolver);
+        parent::__construct($urlResolver, $svnRunner);
         $this->_lister = $lister;
     }
 
@@ -102,6 +103,17 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
         }
 
         return $changes;
+    }
+
+    /**
+     * Does an actual shell command
+     *
+     * @param string $command The command to run
+     * @return string The output of the command
+     */
+    protected function _doShellCommand($command)
+    {
+        return shell_exec($command);
     }
 
 }

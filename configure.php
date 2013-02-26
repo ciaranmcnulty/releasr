@@ -15,12 +15,15 @@ $config = new Releasr_Config(array(
     '/etc/releasr.conf',
     dirname(realpath(__FILE__)).'/config/releasr.conf',
 ));
-$urlResolver = new Releasr_Repo_UrlResolver($config);
 
-// objects that do the actual work
-$lister = new Releasr_Release_Lister($urlResolver);
-$reviewer = new Releasr_Release_Reviewer($urlResolver, $lister);
-$preparer = new Releasr_Release_Preparer($urlResolver);
+// util objects
+$urlResolver = new Releasr_Repo_UrlResolver($config);
+$svnRunner = new Releasr_Repo_Runner();
+
+// objects that coordinate the actions
+$lister = new Releasr_Release_Lister($urlResolver, $svnRunner);
+$reviewer = new Releasr_Release_Reviewer($urlResolver, $svnRunner, $lister);
+$preparer = new Releasr_Release_Preparer($urlResolver, $svnRunner);
 
 // cli command wrappers
 $commands = array(

@@ -15,9 +15,15 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
      */
     private $_reviewer;
 
+    /** 
+     * @var Releasr_SvnRunner
+     */
+    private $_svnRunner;
+
     public function setUp()
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
+        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
 
         $release = $this->getMock('Releasr_Repo_Release');
         $release->url = 'http://branch-url';
@@ -27,7 +33,7 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
             ->method('getMostRecentRelease')
             ->will($this->returnValue($release));
         
-        $this->_reviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), array($this->_config, $this->_lister));  
+        $this->_reviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), array($this->_config, $this->_svnRunner, $this->_lister));  
 
         $this->_reviewer->expects($this->any())
             ->method('_doShellCommand')
@@ -65,7 +71,7 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     public function testReviewReleaseCausesAnExceptionWhenXmlFromBranchLogIsUnparseable()
     {    
         $badResponseReviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), 
-            array($this->_config, $this->_lister));
+            array($this->_config, $this->_svnRunner, $this->_lister));
             
         $badResponseReviewer->expects($this->any())
             ->method('_doShellCommand')
@@ -117,10 +123,10 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     /**
      * @expectedException Releasr_Exception_Repo
      */
-    public function testReviewReleaseCausesAnExceptionWhenXmlFromTrunkhLogIsUnparseable()
+    public function testReviewReleaseCausesAnExceptionWhenXmlFromTrunkLogIsUnparseable()
     {    
         $badResponseReviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), 
-            array($this->_config, $this->_lister));
+          array($this->_config, $this->_svnRunner, $this->_lister));
 
         $badResponseReviewer->expects($this->at(0))
             ->method('_doShellCommand')

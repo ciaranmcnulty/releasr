@@ -19,22 +19,6 @@ class Releasr_Release_Preparer extends Releasr_Release_Abstract
         $trunkUrl = $this->_urlResolver->getTrunkUrlForProject($projectName);
         $branchUrl = $this->_urlResolver->getBranchUrlForProject($projectName) . '/' . $branchName;
 
-        $this->_svnCopy($trunkUrl, $branchUrl, 'Creating release branch');
-    }
-
-    /**
-     * Does an SVN copy between two URLs
-     *
-     * @param string $source The source URL
-     * @param string $destination The destination URL
-     * @param string The commit message to attach
-     */
-    private function _svnCopy($source, $destination, $message)
-    {
-        $command =  'svn copy ' . escapeshellarg($source)  . ' ' . escapeshellarg($destination) . ' -m ' . escapeshellarg($message);
-        $response = $this->_doShellCommand($command);
-        if (FALSE === strpos($response, 'Committed revision')) {
-            throw new Releasr_Exception_Repo('Could not parse response from repository.');
-        }        
+        $this->_svnRunner->copy($trunkUrl, $branchUrl, 'Creating release branch');
     }
 }

@@ -8,6 +8,7 @@
 */
 
 require_once 'Config.php';
+require_once 'Repo/Runner.php';
 require_once 'Repo/Release.php';
 require_once 'Repo/Change.php';
 require_once 'Repo/UrlResolver.php';

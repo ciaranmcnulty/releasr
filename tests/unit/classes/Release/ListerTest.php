@@ -20,30 +20,28 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
      */
     private $_config;
 
+    /** 
+    * @var Releasr_SvnRunner
+    */
+    private $_svnRunner;
+
     public function setUp()
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
-        
-        $this->_lister = $this->getMock('Releasr_Release_Lister', array('_doShellCommand'), array($this->_config));
-        $this->_exampleResponse = file_get_contents(dirname(__FILE__).'/example-listing.xml');
-        $this->_lister->expects($this->any())
-            ->method('_doShellCommand')
-            ->will($this->returnValue($this->_exampleResponse));
-    }
+        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
 
-    public function testListReleasesCausesAShellCommandToBeRun()
-    {
-        $this->_lister->expects($this->once())
-            ->method('_doShellCommand');
-        
-        $this->_lister->listReleases('myproject');
+        $this->_exampleResponse = file_get_contents(dirname(__FILE__).'/example-listing.xml');
+        $this->_svnRunner->expects($this->any())
+            ->method('ls')
+            ->will($this->returnValue($this->_exampleResponse));
+
+        $this->_lister = new Releasr_Release_Lister($this->_config, $this->_svnRunner);
     }
 
     public function testListReleasesDoesSvnListCommand()
     {
-        $this->_lister->expects($this->any())
-            ->method('_doShellCommand')
-            ->with($this->matchesRegularExpression('/^svn list/'));
+        $this->_svnRunner->expects($this->once())
+            ->method('ls');
 
         $this->_lister->listReleases('myproject');
     }
@@ -54,18 +52,9 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
             ->method('getBranchUrlForProject')
             ->will($this->returnValue('http://example/myproject/releases'));
         
-        $this->_lister->expects($this->any())
-            ->method('_doShellCommand')
-            ->with($this->stringContains('http://example/myproject/releases'));
-
-        $this->_lister->listReleases('myproject');
-    }
-
-    public function testListReleasesAsksForResultsInXmlFormat()
-    {
-        $this->_lister->expects($this->any())
-            ->method('_doShellCommand')
-            ->with($this->stringContains('--xml'));
+        $this->_svnRunner->expects($this->once())
+            ->method('ls')
+            ->with($this->equalTo('http://example/myproject/releases'));
 
         $this->_lister->listReleases('myproject');
     }
@@ -108,12 +97,13 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
      * @expectedException Releasr_Exception_Repo
      */
     public function testListReleasesCausesAnExceptionWhenXmlIsUnparseable()
-    {    
-        $badResponseLister = $this->getMock('Releasr_Release_Lister', array('_doShellCommand'), array($this->_config));
-        $badResponseLister->expects($this->any())
-            ->method('_doShellCommand')
+    {   
+        $badResponseRunner = $this->getMock('Releasr_Repo_Runner');
+        $lister = $this->getMock('Releasr_Release_Lister', array('_doShellCommand'), array($this->_config, $badResponseRunner));
+        $badResponseRunner->expects($this->any())
+            ->method('ls')
             ->will($this->returnValue('not xml'));
-
-        $releases = $badResponseLister->listReleases('myproject');
+    
+        $releases = $lister->listReleases('myproject');
     }
 }
