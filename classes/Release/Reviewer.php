@@ -31,10 +31,9 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
      */
     public function reviewRelease($projectName)
     {
-        
         $release = $this->_lister->getMostRecentRelease($projectName);   
         $revision = $this->_getRevisionWhenReleaseBranchWasCreated($release);
-        return $this->_getRecentChangeObjectsFromTrunk($projectName, $revision);
+        return $this->_getChangesOnTrunkSinceRevision($projectName, $revision);
     }
 
     /**
@@ -45,63 +44,21 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
      */
     private function _getRevisionWhenReleaseBranchWasCreated($release)
     {
-        $responseXml = $this->_svnRunner->log($release->url, TRUE);
-
-        if (!$response = @simplexml_load_string($responseXml)) {
-            throw new Releasr_Exception_Repo('Cannot read response from repository');
-        }
-
-        $lastEntry = $response->xpath('(//logentry)[last()]');
-        return (integer) $lastEntry[0]->attributes()->revision;
+        $changes = $this->_svnRunner->log($release->url, TRUE);
+        return end($changes);
     }
 
     /**
      * Finds any changes that have happened on trunk since the specified revision
      *
      * @param string $projectName The name of the current project
-     * @param integer $revision The revision number
+     * @param Repo_Change $change The revision number
      * @return array Releasr_Repo_Change objects
      */
-    private function _getRecentChangeObjectsFromTrunk($projectName, $revision)
-    {
-        $xmlResponse = $this->_getRecentChangeDataFromTrunk($projectName, $revision);
-        return $this->_buildChangeObjectsFromXmlResponse($xmlResponse);
-    }
-
-    /**
-     * Gets the log of any changes on trunk since the specified revision
-     *
-     * @param string $projectName The name of the current project
-     * @param integer $revision The revision to get the list since
-     * @return SimpleXmlIterator
-     */
-    private function _getRecentChangeDataFromTrunk($projectName, $revision)
+    private function _getChangesOnTrunkSinceRevision($projectName, $change)
     {
         $trunkUrl = $this->_urlResolver->getTrunkUrlForProject($projectName);
-        $xmlResponse = $this->_svnRunner->log($trunkUrl, FALSE, $revision);
-        return $xmlResponse;
+        return $this->_svnRunner->log($trunkUrl, FALSE, $change->revision);
     }
 
-    /**
-     * Parses the XML from the repository into Change objects
-     *
-     * @param string $xmlResponse The raw result from the repository
-     * @return array Releasr_Repo_Change objects
-     */
-    private function _buildChangeObjectsFromXmlResponse($xmlResponse)
-    {
-        if (!$response = @simplexml_load_string($xmlResponse)) {
-            throw new Releasr_Exception_Repo('Cannot parse response from repository');
-        }
-
-        $changes = array();
-        foreach ($response as $entry) {
-            $change = new Releasr_Repo_Change();
-            $change->author = (string) $entry->author;
-            $change->comment = (string) $entry->msg;
-            $changes[] = $change;
-        }
-
-        return $changes;
-    }
 }

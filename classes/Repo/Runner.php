@@ -80,7 +80,32 @@ class Releasr_Repo_Runner
         if ($startRevision) {
             $command .= (' -r' . $startRevision . ':HEAD');
         }
-        return $this->_doShellCommand($command);
+        $response = $this->_doShellCommand($command);
+        return $this->_buildChangeObjectsFromXmlResponse($response);
+    }
+
+    /**
+     * Parses the XML from the repository into Change objects
+     *
+     * @param string $xmlResponse The raw result from the repository
+     * @return array Releasr_Repo_Change objects
+     */
+    private function _buildChangeObjectsFromXmlResponse($xmlResponse)
+    {
+        if (!$response = @simplexml_load_string($xmlResponse)) {
+            throw new Releasr_Exception_Repo('Cannot parse response from repository');
+        }
+
+        $changes = array();
+        foreach ($response as $entry) {
+            $change = new Releasr_Repo_Change();
+            $change->author = (string) $entry->author;
+            $change->comment = (string) $entry->msg;
+            $change->revision = (integer) $entry->attributes()->revision;
+            $changes[] = $change;
+        }
+
+        return $changes;
     }
 
     /**

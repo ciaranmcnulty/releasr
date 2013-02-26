@@ -121,6 +121,8 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
 
     public function testLogDoesSvnLogShellCommand()
     {
+        $this->_setUpRunnerToReturnExampleListingXml($this->_runner);
+
         $this->_runner->expects($this->once())
             ->method('_doShellCommand')
             ->with(
@@ -129,16 +131,22 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
                     $this->stringContains('http://url'),
                     $this->stringContains('--xml')
                 )
-            )
-            ->will($this->returnValue('OUTPUT'));
+            );
 
         $output = $this->_runner->log('http://url');
+    }
 
-        $this->assertSame('OUTPUT', $output);
+    private function _setUpRunnerToReturnExampleLogXml($runner)
+    {
+        $runner->expects($this->any())
+            ->method('_doShellCommand')
+            ->will($this->returnValue(file_get_contents(dirname(__FILE__) . '/example-log.xml')));
     }
 
     public function testLogAddsCorrectFlagToCommandWhenStopOnCopyParamIsTrue()
     {
+        $this->_setUpRunnerToReturnExampleLogXml($this->_runner);
+
         $this->_runner->expects($this->once())
             ->method('_doShellCommand')
             ->with($this->stringContains('--stop-on-copy'));
@@ -148,10 +156,37 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
 
     public function testLogAddsCorrectOptionWhenStartRevisionIsSpecified()
     {
+        $this->_setUpRunnerToReturnExampleLogXml($this->_runner);
+
         $this->_runner->expects($this->once())
             ->method('_doShellCommand')
             ->with($this->stringContains('-r1234:HEAD'));
 
         $this->_runner->log('http://url', FALSE, 1234);
+    }
+
+    /**
+     * @expectedException Releasr_Exception_Repo
+     */
+    public function testLogThrowsExceptionIfServerResponseIsNotXml()
+    {
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->will($this->returnValue('NOT XML'));
+
+        $this->_runner->log('http://url');
+    }
+    
+    public function testLogBuildsChangeObjectsCorrectly()
+    {
+        $this->_setUpRunnerToReturnExampleLogXml($this->_runner);
+
+        $changes = $this->_runner->log('http://url');
+
+        $this->assertCount(2, $changes);
+        $this->assertInstanceOf('Releasr_Repo_Change', $changes[0]);
+        $this->assertAttributeSame('tom', 'author', $changes[0]);
+        $this->assertAttributeSame('Late Message', 'comment', $changes[0]);
+        $this->assertAttributeSame(2345, 'revision', $changes[0]);
     }
 }

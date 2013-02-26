@@ -24,33 +24,48 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
         $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
-
-        $release = $this->getMock('Releasr_Repo_Release');
-        $release->url = 'http://branch-url';
-        
         $this->_lister = $this->getMock('Releasr_Release_Lister', array(), array(), '', FALSE);
-        $this->_lister->expects($this->any())
-            ->method('getMostRecentRelease')
-            ->will($this->returnValue($release));
-        
+
         $this->_reviewer = new Releasr_Release_Reviewer($this->_config, $this->_svnRunner, $this->_lister);  
-            
-        $this->_svnRunner->expects($this->any())
-            ->method('log')
-            ->will($this->returnValue(file_get_contents(dirname(__FILE__).'/example-log.xml')));
     }
 
     public function testReviewerListsReleasesToFindOutWhichIsMostRecent()
     {
+        $this->_setUpRunnerToReturnSomeChanges($this->_svnRunner);
+
         $this->_lister->expects($this->once())
             ->method('getMostRecentRelease')
             ->with($this->equalTo('myproject'));
-        
+
         $this->_reviewer->reviewRelease('myproject');
     }
 
-    public function testReviewerLogsLatestReleaseBranchUsingCorrectUrlAndOptions()
+    private function _setUpRunnerToReturnSomeChanges($runner)
     {
+        $change = $this->getMock('Releasr_Repo_Change');
+        $earliestChange = clone $change;
+        $earliestChange->revision = 1234;
+
+        $runner->expects($this->at(0))
+            ->method('log')
+            ->will($this->returnValue(array($change, $earliestChange)));
+    }
+
+    private function _setUpListerToReturnOneRevision()
+    {
+        $release = $this->getMock('Releasr_Repo_Release');
+        $release->url = 'http://branch-url';
+
+        $this->_lister->expects($this->any())
+             ->method('getMostRecentRelease')
+             ->will($this->returnValue($release));
+    }
+
+    public function testReviewerLogsLatestReleaseBranchToFindWhenItWasCreated()
+    {
+        $this->_setUpListerToReturnOneRevision();
+        $this->_setUpRunnerToReturnSomeChanges($this->_svnRunner);
+
         $this->_svnRunner->expects($this->at(0))
             ->method('log')
             ->with(
@@ -60,9 +75,12 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
 
         $this->_reviewer->reviewRelease('myproject');
     }
+    
+    public function testReviewerLogsTrunkFromBranchPointToHead()
+    {
+        $this->_setUpListerToReturnOneRevision();
+        $this->_setUpRunnerToReturnSomeChanges($this->_svnRunner);
 
-    public function testReviewerLogsTrunk()
-    {        
         $this->_config->expects($this->any())
             ->method('getTrunkUrlForProject')
             ->will($this->returnValue('http://trunk-url'));
@@ -78,14 +96,20 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
         $this->_reviewer->reviewRelease('myproject');
     }
 
-    public function testReviewerBuildsChangeObjectsFromTrunkLogResults()
+    public function testReviewerReturnsTrunkLogs()
     {
-        $changes = $this->_reviewer->reviewRelease('myproject');
-        
-        $this->assertCount(2, $changes);
-        $this->assertInstanceOf('Releasr_Repo_Change', $changes[0]);
-        $this->assertAttributeSame('tom', 'author', $changes[0]);
-        $this->assertAttributeSame('Late Message', 'comment', $changes[0]);
-    }
+        $change = $this->getMock('Releasr_Repo_Change');
+        $changes = array($change);
 
+        $this->_setUpListerToReturnOneRevision();
+        $this->_setUpRunnerToReturnSomeChanges($this->_svnRunner);
+
+        $this->_svnRunner->expects($this->at(1))
+            ->method('log')
+            ->will($this->returnValue($changes));
+
+        $result = $this->_reviewer->reviewRelease('myproject');
+
+        $this->assertSame($changes, $result);
+    }
 }

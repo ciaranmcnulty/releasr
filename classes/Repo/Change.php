@@ -13,7 +13,12 @@ class Releasr_Repo_Change
     public $author;
 
     /**
-    * @var string The commit message
-    */
+     * @var string The commit message
+     */
     public $comment;
+
+    /**
+     * @var integer The revision
+     */
+    public $revision;
 }
