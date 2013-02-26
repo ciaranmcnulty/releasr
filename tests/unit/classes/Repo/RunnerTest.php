@@ -54,7 +54,7 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
 
         $this->_runner->copy('http://from', 'http://to', 'msg');     
     }
-    
+
     public function testListDoesCorrectShellCommand()
     {
         $this->_runner->expects($this->once())
@@ -68,5 +68,52 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
             );
 
         $this->_runner->ls('http://url');
+    }
+
+    public function testListReturnsOutputFromShellCommand()
+    {
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->will($this->returnValue('OUTPUT'));
+
+        $output = $this->_runner->ls('http://url');
+
+        $this->assertSame('OUTPUT', $output);
+    }
+
+    public function testLogDoesSvnLogShellCommand()
+    {
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringContains('svn log'),
+                    $this->stringContains('http://url'),
+                    $this->stringContains('--xml')
+                )
+            )
+            ->will($this->returnValue('OUTPUT'));
+
+        $output = $this->_runner->log('http://url');
+
+        $this->assertSame('OUTPUT', $output);
+    }
+
+    public function testLogAddsCorrectFlagToCommandWhenStopOnCopyParamIsTrue()
+    {
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->with($this->stringContains('--stop-on-copy'));
+
+        $this->_runner->log('http://url', TRUE);
+    }
+
+    public function testLogAddsCorrectOptionWhenStartRevisionIsSpecified()
+    {
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->with($this->stringContains('-r1234:HEAD'));
+
+        $this->_runner->log('http://url', FALSE, 1234);
     }
 }

@@ -31,10 +31,31 @@ class Releasr_Repo_Runner
      * Does an SVN list (can't call this method list() because of PHP builtin function)
      *
      * @param string $url The URL to do the list on
+     * @return string output from the command
      */ 
     public function ls($url)
     {
         return $this->_doShellCommand('svn list --xml ' . escapeshellarg($url));
+    }
+
+    /**
+     * Does an SVN log on a particular URL
+     *
+     * @var string $url The URL to log
+     * @var boolean $stopOnCopy Whether to stop logging at the last copy point
+     * @var integer $startRevision A revision number to start at
+     * @return string output from the command
+     */
+    public function log($url, $stopOnCopy=FALSE, $startRevision=FALSE)
+    {
+        $command = 'svn log --xml ' . escapeshellarg($url);
+        if ($stopOnCopy) {
+            $command .= ' --stop-on-copy';
+        }
+        if ($startRevision) {
+            $command .= (' -r' . $startRevision . ':HEAD');
+        }
+        return $this->_doShellCommand($command);
     }
 
     /**

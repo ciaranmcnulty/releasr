@@ -99,7 +99,7 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
     public function testListReleasesCausesAnExceptionWhenXmlIsUnparseable()
     {   
         $badResponseRunner = $this->getMock('Releasr_Repo_Runner');
-        $lister = $this->getMock('Releasr_Release_Lister', array('_doShellCommand'), array($this->_config, $badResponseRunner));
+        $lister = new Releasr_Release_Lister($this->_config, $badResponseRunner);
         $badResponseRunner->expects($this->any())
             ->method('ls')
             ->will($this->returnValue('not xml'));

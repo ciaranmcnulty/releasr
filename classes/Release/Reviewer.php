@@ -45,7 +45,7 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
      */
     private function _getRevisionWhenReleaseBranchWasCreated($release)
     {
-        $responseXml = $this->_doShellCommand('svn log --xml --stop-on-copy ' . escapeshellarg($release->url));
+        $responseXml = $this->_svnRunner->log($release->url, TRUE);
 
         if (!$response = @simplexml_load_string($responseXml)) {
             throw new Releasr_Exception_Repo('Cannot read response from repository');
@@ -78,7 +78,7 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
     private function _getRecentChangeDataFromTrunk($projectName, $revision)
     {
         $trunkUrl = $this->_urlResolver->getTrunkUrlForProject($projectName);
-        $xmlResponse = $this->_doShellCommand('svn log --xml -r' . $revision . ':HEAD ' . escapeshellarg($trunkUrl));
+        $xmlResponse = $this->_svnRunner->log($trunkUrl, FALSE, $revision);
         return $xmlResponse;
     }
 
@@ -104,16 +104,4 @@ class Releasr_Release_Reviewer extends Releasr_Release_Abstract
 
         return $changes;
     }
-
-    /**
-     * Does an actual shell command
-     *
-     * @param string $command The command to run
-     * @return string The output of the command
-     */
-    protected function _doShellCommand($command)
-    {
-        return shell_exec($command);
-    }
-
 }

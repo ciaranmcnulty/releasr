@@ -33,10 +33,10 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
             ->method('getMostRecentRelease')
             ->will($this->returnValue($release));
         
-        $this->_reviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), array($this->_config, $this->_svnRunner, $this->_lister));  
-
-        $this->_reviewer->expects($this->any())
-            ->method('_doShellCommand')
+        $this->_reviewer = new Releasr_Release_Reviewer($this->_config, $this->_svnRunner, $this->_lister);  
+            
+        $this->_svnRunner->expects($this->any())
+            ->method('log')
             ->will($this->returnValue(file_get_contents(dirname(__FILE__).'/example-log.xml')));
     }
 
@@ -48,52 +48,31 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
         
         $this->_reviewer->reviewRelease('myproject');
     }
-    
+
     public function testReviewerLogsLatestReleaseBranchUsingCorrectUrlAndOptions()
-    {   
-        $this->_reviewer->expects($this->at(0))
-            ->method('_doShellCommand')
+    {
+        $this->_svnRunner->expects($this->at(0))
+            ->method('log')
             ->with(
-                $this->logicalAnd(
-                    $this->stringContains('svn log'),
-                    $this->stringContains('--xml'),
-                    $this->stringContains('--stop-on-copy'),
-                    $this->stringContains('http://branch-url')
-                )
+                $this->equalTo('http://branch-url'),
+                $this->equalTo(TRUE)
             );
-        
+
         $this->_reviewer->reviewRelease('myproject');
     }
 
-    /**
-     * @expectedException Releasr_Exception_Repo
-     */
-    public function testReviewReleaseCausesAnExceptionWhenXmlFromBranchLogIsUnparseable()
-    {    
-        $badResponseReviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), 
-            array($this->_config, $this->_svnRunner, $this->_lister));
-            
-        $badResponseReviewer->expects($this->any())
-            ->method('_doShellCommand')
-            ->will($this->returnValue('not xml'));
-
-        $releases = $badResponseReviewer->reviewRelease('myproject');
-    }
-    
     public function testReviewerLogsTrunk()
     {        
         $this->_config->expects($this->any())
             ->method('getTrunkUrlForProject')
             ->will($this->returnValue('http://trunk-url'));
 
-        $this->_reviewer->expects($this->at(1))
-            ->method('_doShellCommand')
+        $this->_svnRunner->expects($this->at(1))
+            ->method('log')
             ->with(
-                $this->logicalAnd(
-                    $this->stringContains('svn log'),
-                    $this->stringContains('--xml'),
-                    $this->stringContains('http://trunk-url')
-                )
+                $this->equalTo('http://trunk-url'),
+                $this->equalTo(FALSE),
+                $this->equalTo(1234)
             );
 
         $this->_reviewer->reviewRelease('myproject');
@@ -109,33 +88,4 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
         $this->assertAttributeSame('Late Message', 'comment', $changes[0]);
     }
 
-    public function testReviewerLogsTrunkWithCorrectRevisions()
-    {
-        $this->_reviewer->expects($this->at(1))
-            ->method('_doShellCommand')
-            ->with(
-                $this->stringContains('-r1234:HEAD') // magic number derived from example-log.xml
-            );
-
-        $this->_reviewer->reviewRelease('myproject');
-    }
-
-    /**
-     * @expectedException Releasr_Exception_Repo
-     */
-    public function testReviewReleaseCausesAnExceptionWhenXmlFromTrunkLogIsUnparseable()
-    {    
-        $badResponseReviewer = $this->getMock('Releasr_Release_Reviewer', array('_doShellCommand'), 
-          array($this->_config, $this->_svnRunner, $this->_lister));
-
-        $badResponseReviewer->expects($this->at(0))
-            ->method('_doShellCommand')
-            ->will($this->returnValue(file_get_contents(dirname(__FILE__).'/example-log.xml')));
-
-        $badResponseReviewer->expects($this->at(1))
-            ->method('_doShellCommand')
-            ->will($this->returnValue('not xml'));
-
-        $releases = $badResponseReviewer->reviewRelease('myproject');
-    }
 }
