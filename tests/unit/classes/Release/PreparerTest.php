@@ -27,7 +27,9 @@ class Releasr_Release_PreparerTest extends PHPUnit_Framework_Testcase
 
     public function testPepareReleaseDoesSvnCopyWithCorrectParameters()
     {
-        $this->_preparer->expects($this->once())
+        $this->_setRepoCopyResponse('Committed revision 12345');
+        
+        $this->_preparer->expects($this->at(0))
             ->method('_doShellCommand')
             ->with(
                 $this->logicalAnd(
@@ -42,10 +44,31 @@ class Releasr_Release_PreparerTest extends PHPUnit_Framework_Testcase
 
     public function testPrepareReleaseCorrectlySetsCommitMessage()
     {
-        $this->_preparer->expects($this->once())
+        $this->_setRepoCopyResponse('Committed revision 12345');
+        
+        $this->_preparer->expects($this->at(0))
             ->method('_doShellCommand')
-            ->with($this->stringContains('-m "Creating release branch"'));
+            ->with($this->stringContains('-m \'Creating release branch\''));
 
         $this->_preparer->prepareRelease('myproject', 'mybranch');
+    }
+
+    /**
+     * @expectedException Releasr_Exception_Repo
+     */
+    public function testPrepareReleaseThrowsExceptionIfRepoResponseIsNotWhatWasExpected()
+    {
+        $this->_setRepoCopyResponse('Some sort of error');
+        $this->_preparer->prepareRelease('myproject', 'mybranch');        
+    }
+    
+    /**
+     * Sets the repository response message to the branch copy request
+     */ 
+    protected function _setRepoCopyResponse($response)
+    {
+        $this->_preparer->expects($this->at(0))
+            ->method('_doShellCommand')
+            ->will($this->returnValue($response));
     }
 }
