@@ -3,10 +3,10 @@
 /**
  * @package Releasr
  */
-class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
+class Releasr_Controller_ListerTest extends PHPUnit_Framework_Testcase
 {
     /**
-     * @var Releasr_Release_Lister The lister under test
+     * @var Releasr_Controller_Lister The lister under test
      */
     private $_lister;
 
@@ -29,7 +29,7 @@ class Releasr_Release_ListerTest extends PHPUnit_Framework_Testcase
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
         $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
-        $this->_lister = new Releasr_Release_Lister($this->_config, $this->_svnRunner);
+        $this->_lister = new Releasr_Controller_Lister($this->_config, $this->_svnRunner);
     }
 
     public function testListReleasesCallsTheSvnRunnerCorrectlyToGetListing()

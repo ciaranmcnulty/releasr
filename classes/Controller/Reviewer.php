@@ -5,17 +5,17 @@
 *
 * @package Releasr
 */
-class Releasr_Release_Reviewer extends Releasr_Release_Abstract
+class Releasr_Controller_Reviewer extends Releasr_Controller_Abstract
 {
     /**
-     * @var Releasr_Release_Lister Used to work out which release is the most recent
+     * @var Releasr_Controller_Lister Used to work out which release is the most recent
      */
     private $_lister;
 
     /**
      * @param array $urlResolver The config of the repository
      * @param Releasr_Repo_Runner $svnRunner The object to use to execute SVN commands
-     * @param Releasr_Release_Lister $lister The object to use to list releases
+     * @param Releasr_Controller_Lister $lister The object to use to list releases
      */
     public function __construct($urlResolver, $svnRunner, $lister)
     {

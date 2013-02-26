@@ -21,9 +21,9 @@ $urlResolver = new Releasr_Repo_UrlResolver($config);
 $svnRunner = new Releasr_Repo_Runner();
 
 // objects that coordinate the actions
-$lister = new Releasr_Release_Lister($urlResolver, $svnRunner);
-$reviewer = new Releasr_Release_Reviewer($urlResolver, $svnRunner, $lister);
-$preparer = new Releasr_Release_Preparer($urlResolver, $svnRunner);
+$lister = new Releasr_Controller_Lister($urlResolver, $svnRunner);
+$reviewer = new Releasr_Controller_Reviewer($urlResolver, $svnRunner, $lister);
+$preparer = new Releasr_Controller_Preparer($urlResolver, $svnRunner);
 
 // cli command wrappers
 $commands = array(

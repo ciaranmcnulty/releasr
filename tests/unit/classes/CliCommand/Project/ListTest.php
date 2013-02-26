@@ -27,7 +27,7 @@ class Releasr_CliCommand_Project_ListTest extends PHPUnit_Framework_Testcase
         $this->_validArguments = array('myproject');
 
         $config = $this->getMock('Releasr_Config', array(), array(), '', FALSE);
-        $this->_releaseLister = $this->getMock('Releasr_Release_Lister', array(), array(), '', FALSE);
+        $this->_releaseLister = $this->getMock('Releasr_Controller_Lister', array(), array(), '', FALSE);
         $this->_command = new Releasr_CliCommand_Project_List($config, $this->_releaseLister);
     }
     

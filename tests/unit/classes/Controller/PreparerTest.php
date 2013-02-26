@@ -3,10 +3,10 @@
 /**
  * @package Releasr
  */
-class Releasr_Release_PreparerTest extends PHPUnit_Framework_Testcase
+class Releasr_Controller_PreparerTest extends PHPUnit_Framework_Testcase
 {
     /**
-     * @var Releasr_Release_Preparer
+     * @var Releasr_Controller_Preparer
      */
     private $_preparer;
     
@@ -28,7 +28,7 @@ class Releasr_Release_PreparerTest extends PHPUnit_Framework_Testcase
             ->method('getBranchUrlForProject')
             ->will($this->returnValue('http://branch-url'));
 
-        $this->_preparer = new Releasr_Release_Preparer($urlResolver, $this->_svnRunner);
+        $this->_preparer = new Releasr_Controller_Preparer($urlResolver, $this->_svnRunner);
     }
 
     public function testPepareReleaseDoesSvnCopyWithCorrectParameters()

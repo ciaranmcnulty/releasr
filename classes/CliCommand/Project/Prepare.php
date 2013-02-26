@@ -8,13 +8,13 @@
 class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abstract
 {
     /**
-     * @var Releasr_Release_Preparer
+     * @var Releasr_Controller_Preparer
      */
     private $_preparer;
 
     /**
      * @param Releasr_Config The application config
-     * @var Releasr_Release_Preparer The preparer to use to talk to the repo
+     * @var Releasr_Controller_Preparer The preparer to use to talk to the repo
      */
     public function __construct($config, $preparer) 
     {

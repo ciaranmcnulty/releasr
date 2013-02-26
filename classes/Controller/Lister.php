@@ -5,7 +5,7 @@
 *
 * @package Releasr
 */
-class Releasr_Release_Lister extends Releasr_Release_Abstract
+class Releasr_Controller_Lister extends Releasr_Controller_Abstract
 {
 
     /**

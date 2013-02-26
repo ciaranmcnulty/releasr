@@ -8,13 +8,13 @@
 class Releasr_CliCommand_Project_List extends Releasr_CliCommand_Project_Abstract
 {
     /**
-     * @var Releasr_Release_Lister
+     * @var Releasr_Controller_Lister
      */
     private $_releaseLister;
 
     /**
      * @param Releasr_Config The application config
-     * @param Releasr_Release_Lister $releaseLister The object that is used to list the releases
+     * @param Releasr_Controller_Lister $releaseLister The object that is used to list the releases
      */
     public function __construct($config, $releaseLister)
     {

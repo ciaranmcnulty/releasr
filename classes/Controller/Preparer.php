@@ -5,7 +5,7 @@
 *
 * @package Releasr
 */
-class Releasr_Release_Preparer extends Releasr_Release_Abstract
+class Releasr_Controller_Preparer extends Releasr_Controller_Abstract
 {
     /**
      * Creates a new release branch

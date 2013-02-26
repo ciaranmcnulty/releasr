@@ -6,7 +6,7 @@
 * @todo Move SVN functionality into a subclass
 * @package Releasr
 */
-abstract class Releasr_Release_Abstract
+abstract class Releasr_Controller_Abstract
 {
     /**
      * @var Releasr_Repo_UrlResolver Configuration of how the target repository is set up

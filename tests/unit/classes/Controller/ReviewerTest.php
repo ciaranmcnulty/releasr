@@ -3,15 +3,15 @@
 /**
  * @package Releasr
  */
-class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
+class Releasr_Controller_ReviewerTest extends PHPUnit_Framework_Testcase
 {
     /**
-     * @var Releasr_Release_Lister
+     * @var Releasr_Controller_Lister
      */
     private $_lister;
 
     /**
-     * @var Releasr_Release_Reviewer
+     * @var Releasr_Controller_Reviewer
      */
     private $_reviewer;
 
@@ -24,9 +24,9 @@ class Releasr_Release_ReviewerTest extends PHPUnit_Framework_Testcase
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
         $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
-        $this->_lister = $this->getMock('Releasr_Release_Lister', array(), array(), '', FALSE);
+        $this->_lister = $this->getMock('Releasr_Controller_Lister', array(), array(), '', FALSE);
 
-        $this->_reviewer = new Releasr_Release_Reviewer($this->_config, $this->_svnRunner, $this->_lister);  
+        $this->_reviewer = new Releasr_Controller_Reviewer($this->_config, $this->_svnRunner, $this->_lister);  
     }
 
     public function testReviewerListsReleasesToFindOutWhichIsMostRecent()

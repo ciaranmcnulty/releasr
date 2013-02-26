@@ -13,7 +13,7 @@ class Releasr_CliCommand_Project_PrepareTest extends PHPUnit_Framework_Testcase
     private $_command;
     
     /**
-     * @var Releasr_Release_Preparer The object used to query the repository
+     * @var Releasr_Controller_Preparer The object used to query the repository
      */
     private $_releaseReviewer;
     
@@ -27,7 +27,7 @@ class Releasr_CliCommand_Project_PrepareTest extends PHPUnit_Framework_Testcase
         $this->_validArguments = array('myproject', 'mybranch');
 
         $config = $this->getMock('Releasr_Config', array(), array(), '', FALSE);
-        $this->_releasePreparer = $this->getMock('Releasr_Release_Preparer', array(), array(), '', FALSE);
+        $this->_releasePreparer = $this->getMock('Releasr_Controller_Preparer', array(), array(), '', FALSE);
         $this->_command = new Releasr_CliCommand_Project_Prepare($config, $this->_releasePreparer);
     }
 

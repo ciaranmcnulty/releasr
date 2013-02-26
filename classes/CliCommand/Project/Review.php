@@ -8,13 +8,13 @@
 class Releasr_CliCommand_Project_Review extends Releasr_CliCommand_Project_Abstract 
 {
     /**
-     * @var Releasr_Release_Reviewer
+     * @var Releasr_Controller_Reviewer
      */
     private $_reviewer;
 
     /**
      * @param Releasr_Config The application config
-     * @var Releasr_Release_Reviewer The reviewer to use to talk to the repo
+     * @var Releasr_Controller_Reviewer The reviewer to use to talk to the repo
      */
     public function __construct($config, $reviewer) 
     {
