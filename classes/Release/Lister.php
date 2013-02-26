@@ -29,31 +29,7 @@ class Releasr_Release_Lister extends Releasr_Release_Abstract
     public function listReleases($projectName)
     {
         $releasesUrl = $this->_urlResolver->getBranchUrlForProject($projectName);
-        $xmlResponse = $this->_svnRunner->ls($releasesUrl);
-        return $this->_parseXmlIntoReleaseObjects($xmlResponse, $releasesUrl);
-    }
-
-    /**
-     * Builds Release objects based on the response from the repository
-     *
-     * @param string $xmlResponse Xml svn list response from the repository
-     * @param string $relseasesUrl The base URL for branches in this repo
-     * @return array Releasr_Repo_Release objects
-     */
-    private function _parseXmlIntoReleaseObjects($xmlResponse, $releasesUrl)
-    {        
-        if (!$xml = @simplexml_load_string($xmlResponse)) {
-            throw new Releasr_Exception_Repo('Could not parse response from repository');
-        }
-
-        $releases = array();
-        foreach ($xml->list->entry as $entry) {
-            $release = new Releasr_Repo_Release;
-            $release->name = (string)$entry->name;
-            $release->url = $releasesUrl . '/' . (string)$entry->name;
-            $release->date = new DateTime((string)$entry->commit->date);
-            $releases[] = $release;
-        }
+        $releases = $this->_svnRunner->ls($releasesUrl);
         usort($releases, array($this, '_sortByDate'));
         return $releases;
     }

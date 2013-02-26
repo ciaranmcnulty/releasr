@@ -57,6 +57,8 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
 
     public function testListDoesCorrectShellCommand()
     {
+        $this->_setUpRunnerToReturnExampleListingXml($this->_runner);
+            
         $this->_runner->expects($this->once())
             ->method('_doShellCommand')
             ->with(
@@ -69,16 +71,52 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
 
         $this->_runner->ls('http://url');
     }
-
-    public function testListReturnsOutputFromShellCommand()
+        
+    private function _setUpRunnerToReturnExampleListingXml($runner)
     {
-        $this->_runner->expects($this->once())
+        $runner->expects($this->any())
             ->method('_doShellCommand')
-            ->will($this->returnValue('OUTPUT'));
+            ->will($this->returnValue(file_get_contents(dirname(__FILE__) . '/example-listing.xml')));
+    }
+    
+    public function testListParsesXmlResultIntoCorrectNumberOfReleases()
+    {
+        $this->_setUpRunnerToReturnExampleListingXml($this->_runner);
 
-        $output = $this->_runner->ls('http://url');
+        $releases = $this->_runner->ls('http://url');
 
-        $this->assertSame('OUTPUT', $output);
+        $this->assertCount(3, $releases);
+    }
+
+    public function testListParsesXmlResultIntoReleaseObjects()
+    {
+        $this->_setUpRunnerToReturnExampleListingXml($this->_runner);
+
+        $releases = $this->_runner->ls('http://url');
+        
+        $this->assertInstanceOf('Releasr_Repo_Release', $releases[0]);  
+    }
+    
+    public function testListsParsesXmlResultIntoCorrectPropertiesOnReleaseObjects()
+    {
+        $this->_setUpRunnerToReturnExampleListingXml($this->_runner);
+
+        $releases = $this->_runner->ls('http://url');
+
+        $this->assertAttributeSame('release-1234', 'name', $releases[0]);
+        $this->assertAttributeSame('http://url/release-1234', 'url', $releases[0]);
+    }
+
+    /**
+     * @expectedException Releasr_Exception_Repo
+     */
+    public function testListThrowsRepoExceptionIfResponseIsNotXml()
+    {
+        $this->_runner->expects($this->any())
+            ->method('_doShellCommand')
+            ->will($this->returnValue('SOME SORT OF ERROR'));
+
+        $this->_runner->ls('http://url');
     }
 
     public function testLogDoesSvnLogShellCommand()
