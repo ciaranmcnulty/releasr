@@ -22,15 +22,30 @@ Available commands
 
 **help** - Shows documentation for other commands
 
+Installation
+============
+
+Git clone from this repo to a path of your choosing, e.g.:
+
+    git clone <repo>.git /opt/releasr
+
+Symlink releasr.php into the system path
+
+    ln -s /opt/releasr/releasr.php /usr/bin/releasr
+    
+Either edit the config file in place or better, move it to /etc/releasr.conf
+
+    cp /opt/releasr/config/releasr.conf /etc/releasr.conf
+    
+Modify the configuration file to suit your repository.
+
 Configuration
 =============
 
-To configure relear system-wide, copy the .conf file to /etc/releasr.conf
+Repository URLs
+---------------
 
-Repository configuration options
---------------------------------
-
-Special values inside the URL will be replaced, at present the only supported value is %PROJECT% which will be replaced with the name of the current project.
+Special values inside URLs will be replaced, at present the only supported value is %PROJECT% which will be replaced with the name of the current project.
 
 Note: URLs should not be suffixed with a /
 
@@ -41,6 +56,13 @@ Note: URLs should not be suffixed with a /
 **releases_url** specifies the URL in which a project's tagged releases are kept. 
 
     releases_url = http://my-server-domain/svn/projects/%PROJECT%/branches/releases
+    
+Project options
+---------------
+
+Optionally specify a list of allowed projects. Releasr will show an error if a project name not on the list is used
+
+    projects = project1, project2, project3
 
 Example workflow
 ================
