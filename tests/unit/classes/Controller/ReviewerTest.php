@@ -23,7 +23,7 @@ class Releasr_Controller_ReviewerTest extends PHPUnit_Framework_Testcase
     public function setUp()
     {
         $this->_config = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
-        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
+        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner', array(), array(), '', FALSE);
         $this->_lister = $this->getMock('Releasr_Controller_Lister', array(), array(), '', FALSE);
 
         $this->_reviewer = new Releasr_Controller_Reviewer($this->_config, $this->_svnRunner, $this->_lister);  

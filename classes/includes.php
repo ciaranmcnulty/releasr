@@ -9,6 +9,11 @@
 
 require_once 'Config.php';
 require_once 'Repo/Runner.php';
+require_once 'Repo/Runner/Abstract.php';
+require_once 'Repo/Runner/Copy.php';
+require_once 'Repo/Runner/Externals.php';
+require_once 'Repo/Runner/List.php';
+require_once 'Repo/Runner/Log.php';
 require_once 'Repo/Release.php';
 require_once 'Repo/Change.php';
 require_once 'Repo/External.php';

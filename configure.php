@@ -18,7 +18,14 @@ $config = new Releasr_Config(array(
 
 // util objects
 $urlResolver = new Releasr_Repo_UrlResolver($config);
-$svnRunner = new Releasr_Repo_Runner();
+
+// svn executor objects
+$svnRunner = new Releasr_Repo_Runner(array(
+    'copy' => new Releasr_Repo_Runner_Copy,
+    'list' => new Releasr_Repo_Runner_List,
+    'externals' => new Releasr_Repo_Runner_Externals,
+    'log' => new Releasr_Repo_Runner_Log
+));
 
 // objects that coordinate the actions
 $lister = new Releasr_Controller_Lister($urlResolver, $svnRunner);

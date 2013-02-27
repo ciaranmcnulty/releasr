@@ -8,6 +8,30 @@
 class Releasr_Repo_Runner
 {
     /**
+     * @var List of subcommands
+     */
+    private $_commands;
+    
+    /**
+     * @param array List of subcommands
+     */
+    public function __construct($commands)
+    {
+        $this->_commands = $commands;
+    }
+
+    /**
+     * Does an SVN list (can't call this method list() because of PHP builtin function)
+     *
+     * @param string $url The URL to do the list on
+     * @return string output from the command
+     */
+    public function ls($url)
+    {
+        return $this->_commands['list']->run($url);
+    }
+
+    /**
      * Does an SVN copy
      * 
      * @param string $source The URL to copy from
@@ -17,50 +41,7 @@ class Releasr_Repo_Runner
      */
     public function copy($source, $destination, $message)
     {
-        $command =  'svn copy ' . escapeshellarg($source)  . ' ' . escapeshellarg($destination) . ' -m ' . escapeshellarg($message);
-        $response = $this->_doShellCommand($command);
-
-        if (FALSE === strpos($response, 'Committed revision')) {
-            throw new Releasr_Exception_Repo('Could not parse response from repository.');
-        }
-
-        return $response;
-    }
-
-    /**
-     * Does an SVN list (can't call this method list() because of PHP builtin function)
-     *
-     * @param string $url The URL to do the list on
-     * @return string output from the command
-     */ 
-    public function ls($url)
-    {
-        $response = $this->_doShellCommand('svn list --xml ' . escapeshellarg($url));
-        return $this->_parseListingXmlIntoReleaseObjects($response, $url);
-    }
-
-    /**
-     * Builds Release objects based on the response from the repository
-     *
-     * @param string $xmlResponse Xml svn list response from the repository
-     * @param string $relseasesUrl The base URL for branches in this repo
-     * @return array Releasr_Repo_Release objects
-     */
-    private function _parseListingXmlIntoReleaseObjects($xmlResponse, $releasesUrl)
-    {        
-        if (!$xml = @simplexml_load_string($xmlResponse)) {
-            throw new Releasr_Exception_Repo('Could not parse response from repository');
-        }
-
-        $releases = array();
-        foreach ($xml->list->entry as $entry) {
-            $release = new Releasr_Repo_Release;
-            $release->name = (string)$entry->name;
-            $release->url = $releasesUrl . '/' . (string)$entry->name;
-            $release->date = new DateTime((string)$entry->commit->date);
-            $releases[] = $release;
-        }
-        return $releases;
+        return $this->_commands['copy']->run($source, $destination, $message);
     }
 
     /**
@@ -73,83 +54,17 @@ class Releasr_Repo_Runner
      */
     public function log($url, $stopOnCopy=FALSE, $startRevision=FALSE)
     {
-        $command = 'svn log --xml ' . escapeshellarg($url);
-        if ($stopOnCopy) {
-            $command .= ' --stop-on-copy';
-        }
-        if ($startRevision) {
-            $command .= (' -r' . $startRevision . ':HEAD');
-        }
-        $response = $this->_doShellCommand($command);
-        return $this->_buildChangeObjectsFromXmlResponse($response);
-    }
-
-    /**
-     * Parses the XML from the repository into Change objects
-     *
-     * @param string $xmlResponse The raw result from the repository
-     * @return array Releasr_Repo_Change objects
-     */
-    private function _buildChangeObjectsFromXmlResponse($xmlResponse)
-    {
-        if (!$response = @simplexml_load_string($xmlResponse)) {
-            throw new Releasr_Exception_Repo('Cannot parse response from repository');
-        }
-
-        $changes = array();
-        foreach ($response as $entry) {
-            $change = new Releasr_Repo_Change();
-            $change->author = (string) $entry->author;
-            $change->comment = (string) $entry->msg;
-            $change->revision = (integer) $entry->attributes()->revision;
-            $changes[] = $change;
-        }
-
-        return $changes;
+        return $this->_commands['log']->run($url, $stopOnCopy, $startRevision);
     }
 
     /**
      * Gets the externals that are set in a URL's subfolders
      *
      * @param string $url The URL to get the externals from
+     * @return array Releasr_Repo_External The externals of the URL
      */
     public function externals($url)
     {
-        $response = $this->_doShellCommand('svn propget -R svn:externals ' . escapeshellarg($url) . ' --xml');
-        return $this->_buildExternalObjectsFromXmlResponse($response);
-    }
-
-    /**
-     * Parses the XML from the repository into External objects
-     *
-     * @param string $xmlResponse The raw result from the repository
-     * @return array Releasr_Repo_External objects
-     */
-    private function _buildExternalObjectsFromXmlResponse($xmlResponse)
-    {
-        $result = array();
-        if(!$xml = @simplexml_load_string($xmlResponse)) {
-            throw new Releasr_Exception_Repo('Cannot parse response from repository');
-        }
-        
-        foreach ($xml->target as $target) {
-            $external = new Releasr_Repo_External;
-            $external->path = (string) $target->attributes()->path;
-            $external->property = (string) $target->property;
-            $array[] = $external;
-        }
-
-        return $array;
-    }
-
-    /**
-     * Does an actual shell command
-     *
-     * @param string $command The command to run
-     * @return string The output of the command
-     */
-    protected function _doShellCommand($command)
-    {
-        return shell_exec($command);
+        return $this->_commands['externals']->run($url);
     }
 }

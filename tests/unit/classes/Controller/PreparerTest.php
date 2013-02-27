@@ -18,7 +18,7 @@ class Releasr_Controller_PreparerTest extends PHPUnit_Framework_Testcase
     public function setUp()
     {
         $urlResolver = $this->getMock('Releasr_Repo_UrlResolver', array(), array(), '', FALSE);
-        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner');
+        $this->_svnRunner = $this->getMock('Releasr_Repo_Runner', array(), array(), '', FALSE);
 
         $urlResolver->expects($this->any())
             ->method('getTrunkUrlForProject')
