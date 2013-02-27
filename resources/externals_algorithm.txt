@@ -1,18 +1,12 @@
 
-`svn propget -R svn:externals <url> --verbose`
-
- outputs:
- Properties on 'file:///opt/svn/testrepo/trunk/myproject/library':
-   svn:externals
-     Zend http://framework.zend.com/svn/framework/standard/tags/release-1.10.7/library/Zend/
-     Bar -r 1234 http://bar/bar
-     Baz http://baz/baz
+`svn propget -R svn:externals <url> --xml`
  
  
-parse out any versioned entries
 
 for each folder:
 
+parse out any versioned entries
+if there are some unversioned ones remaining:
 svn co --depth=empty <url>/to/external /tmp/afasf2343
 svn propset svn:externals "blah" /tmp/afasf2343
 svn ci /tmp/afasf2342 -m "Freezing externals"

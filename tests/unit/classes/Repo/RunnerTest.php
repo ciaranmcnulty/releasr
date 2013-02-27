@@ -189,4 +189,62 @@ class Releasr_Repo_RunnerTest extends PHPUnit_Framework_Testcase
         $this->assertAttributeSame('Late Message', 'comment', $changes[0]);
         $this->assertAttributeSame(2345, 'revision', $changes[0]);
     }
+    
+    public function testExternalsDoesCorrectSvnCommand()
+    {
+        $this->_setUpRunnerToReturnExampleExternalsXml($this->_runner);
+
+        $this->_runner->expects($this->once())
+            ->method('_doShellCommand')
+            ->with(
+                $this->logicalAnd(
+                    $this->stringContains('svn propget'),
+                    $this->stringContains('svn:externals'),
+                    $this->stringContains('-R'),
+                    $this->stringContains('--xml'),
+                    $this->stringContains('http://url')
+                )
+            );
+
+        $this->_runner->externals('http://url');
+    }
+
+    public function testExternalsReturnsExternalsObjects()
+    {
+        $this->_setUpRunnerToReturnExampleExternalsXml($this->_runner);
+
+        $result = $this->_runner->externals('http://url');
+
+        $this->assertCount(2, $result);
+        $this->assertInstanceOf('Releasr_Repo_External', $result[0]);
+    }
+
+    private function _setUpRunnerToReturnExampleExternalsXml($runner)
+    {
+        $runner->expects($this->any())
+            ->method('_doShellCommand')
+            ->will($this->returnValue(file_get_contents(dirname(__FILE__) . '/example-externals.xml')));
+    }
+
+    public function testExternalsReturnsExternalsObjectsWithCorrectPropertiesSet()
+    {
+        $this->_setUpRunnerToReturnExampleExternalsXml($this->_runner);
+
+        $result = $this->_runner->externals('http://url');
+
+        $this->assertAttributeSame('http://repo/library1', 'path', $result[0]);
+        $this->assertContains('http://foo',  $result[0]->property);
+    }
+
+    /**
+     * @expectedException Releasr_Exception_Repo
+     */
+    public function testExternalsThrowsExceptionIfRepoResultIsNotParsable()
+    {
+        $this->_runner->expects($this->any())
+            ->method('_doShellCommand')
+            ->will($this->returnValue('NOT XML'));
+
+        $this->_runner->externals('http://url');
+    }
 }

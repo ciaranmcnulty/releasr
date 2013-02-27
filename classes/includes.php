@@ -11,6 +11,7 @@ require_once 'Config.php';
 require_once 'Repo/Runner.php';
 require_once 'Repo/Release.php';
 require_once 'Repo/Change.php';
+require_once 'Repo/External.php';
 require_once 'Repo/UrlResolver.php';
 require_once 'Controller/Abstract.php';
 require_once 'Controller/Lister.php';

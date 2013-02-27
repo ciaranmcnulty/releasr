@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<properties>
+    <target path="http://repo/library1">
+        <property name="svn:externals">Foo http://foo
+Bar http://bar
+</property>
+    </target>
+    <target path="http://repo/library2">
+        <property name="svn:externals">Tom http://tom
+Dick http://dick
+</property>
+    </target>
+</properties>
