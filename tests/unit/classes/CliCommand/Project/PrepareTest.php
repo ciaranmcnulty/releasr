@@ -22,12 +22,26 @@ class Releasr_CliCommand_Project_PrepareTest extends PHPUnit_Framework_Testcase
     */
     private $_validArguments;
     
+    /**
+     * @var Releasr_Repo_External example external object
+     */
+    private $_external;
+    
     public function setUp()
     {
         $this->_validArguments = array('myproject', 'mybranch');
 
-        $config = $this->getMock('Releasr_Config', array(), array(), '', FALSE);
+        $this->_external = $this->getMock('Releasr_Repo_External');
+
         $this->_releasePreparer = $this->getMock('Releasr_Controller_Preparer', array(), array(), '', FALSE);
+        $this->_releasePreparer->expects($this->any())
+            ->method('prepareRelease')
+            ->will(
+                $this->returnValue(array($this->_external))
+            );
+
+        $config = $this->getMock('Releasr_Config', array(), array(), '', FALSE);
+
         $this->_command = new Releasr_CliCommand_Project_Prepare($config, $this->_releasePreparer);
     }
 
@@ -69,4 +83,20 @@ class Releasr_CliCommand_Project_PrepareTest extends PHPUnit_Framework_Testcase
         
         $this->assertContains('Successfully created branch', $output);
     }
+
+    public function testPrepareOutputContainsWarningIfExternalsAreFound()
+    {
+        $output = $this->_command->run($this->_validArguments);
+
+        $this->assertContains('Warning', $output);
+    }
+
+    public function testPrepareOutputContainsPathsOfUnversionedExternals()
+     {
+         $this->_external->path = 'http://path/to/external';
+    
+         $output = $this->_command->run($this->_validArguments);
+    
+         $this->assertContains($this->_external->path, $output);
+     }
 }

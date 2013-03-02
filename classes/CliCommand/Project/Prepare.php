@@ -31,10 +31,13 @@ class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abst
     {
         $projectName = $this->_getProjectNameFromArguments($arguments);
         $branchName = $this->_getBranchNameFromArguments($arguments);
-        
-        $this->_preparer->prepareRelease($projectName, $branchName);
-        
-        return 'Successfully created branch ' . $branchName . PHP_EOL;
+
+        $externals = $this->_preparer->prepareRelease($projectName, $branchName);
+
+        $output = 'Successfully created branch ' . $branchName . PHP_EOL;
+        $output .= $this->_getExternalsWarningMessage($externals);
+
+        return $output;
     }
 
     /**
@@ -52,6 +55,23 @@ class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abst
     }
 
     /**
+     * Formats a warning message about any unversioned externals on the new branch
+     *
+     * @param array $externals the Releasr_Repo_External objects returned from the branch
+     */
+    private function _getExternalsWarningMessage($externals)
+    {
+        if ($externals) {
+            $warning = 'Warning - unversioned externals exist on branch at:' . PHP_EOL;
+            foreach ($externals as $external) {
+                $warning .= $external->path . PHP_EOL;
+            }
+            return $warning;
+        }
+        return '';
+    }
+
+    /**
      * Gets a usage message string
      *
      * @return string The usage message for this command
@@ -62,11 +82,11 @@ class Releasr_CliCommand_Project_Prepare extends Releasr_CliCommand_Project_Abst
          return $usage;
      }
 
-      /**
-       * Gets the help message for this command
-       */ 
-      public function getHelpMessage()
-      {
-          return 'Prepares a new release, using the provided branch name';
-      }
+     /**
+      * Gets the help message for this command
+      */
+     public function getHelpMessage()
+     {
+         return 'Prepares a new release, using the provided branch name';
+     }
 }
