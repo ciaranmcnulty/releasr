@@ -27,7 +27,7 @@ abstract class Releasr_Integration_Cli_Abstract extends PHPUnit_Framework_Testca
 
     public function setUp()
     {
-        $this->_releasrPath = realpath(dirname(__FILE__)) . '/../../../releasr.php';
+        $this->_releasrPath = realpath(dirname(__FILE__)) . '/../../../application/releasr.php';
         $this->_repoPath = $this->_setUpRepository();
         $this->_setUpBasePaths();
         $this->_configPath = $this->_writeConfigFile();

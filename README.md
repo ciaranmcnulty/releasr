@@ -31,11 +31,11 @@ Git clone from this repo to a path of your choosing, e.g.:
 
 Symlink releasr.php into the system path
 
-    ln -s /opt/releasr/releasr.php /usr/bin/releasr
+    ln -s /opt/releasr/application/releasr.php /usr/bin/releasr
     
 Either edit the config file in place or better, move it to /etc/releasr.conf
 
-    cp /opt/releasr/config/releasr.conf /etc/releasr.conf
+    cp /opt/releasr/application/config/releasr.conf /etc/releasr.conf
     
 Modify the configuration file to suit your repository.
 
