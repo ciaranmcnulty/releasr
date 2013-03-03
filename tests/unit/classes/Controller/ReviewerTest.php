@@ -31,6 +31,7 @@ class Releasr_Controller_ReviewerTest extends PHPUnit_Framework_Testcase
 
     public function testReviewerListsReleasesToFindOutWhichIsMostRecent()
     {
+        $this->_setUpListerToReturnOneRevision();
         $this->_setUpRunnerToReturnSomeChanges($this->_svnRunner);
 
         $this->_lister->expects($this->once())
