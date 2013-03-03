@@ -11,10 +11,14 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__
 require_once('classes/includes.php');
 
 // multiple paths for the config
-$config = new Releasr_Config(array(
+$configPaths = array(
     '/etc/releasr.conf',
-    dirname(realpath(__FILE__)).'/config/releasr.conf',
-));
+    dirname(realpath(__FILE__)).'/config/releasr.conf'
+);
+if (array_key_exists('RELEASR_CONFIG', $_ENV)) {
+    array_unshift($configPaths, $_ENV['RELEASR_CONFIG']);
+}
+$config = new Releasr_Config($configPaths);
 
 // util objects
 $urlResolver = new Releasr_Repo_UrlResolver($config);

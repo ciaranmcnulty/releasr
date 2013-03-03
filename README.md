@@ -42,6 +42,15 @@ Modify the configuration file to suit your repository.
 Configuration
 =============
 
+Config file
+-----------
+
+Releasr will search the following locations for a configuration
+
+1. The location specified in the $RELEASR\_CONFIG\_ environment variable
+2. The system location /etc/releasr.conf
+3. config/releasr.conf inside the install location
+
 Repository URLs
 ---------------
 
