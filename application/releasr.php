@@ -9,7 +9,7 @@
 date_default_timezone_set('Europe/London');
 
 try {
-    $runner = require_once(dirname(__FILE__) . '/configure.php');
+    $runner = require_once(dirname(__FILE__) . '/config/configure.php');
     $arguments = array_slice($_SERVER['argv'], 1);
     echo $runner->run($arguments), PHP_EOL;
 }

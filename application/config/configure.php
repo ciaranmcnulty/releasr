@@ -7,7 +7,8 @@
 
 
 // include everything
-set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__)));
+set_include_path(get_include_path() . PATH_SEPARATOR . dirname(realpath(__FILE__)) . '/../');
+//exit(get_include_path());
 require_once('classes/includes.php');
 
 // multiple paths for the config
