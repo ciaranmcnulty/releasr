@@ -11,9 +11,9 @@ class Releasr_Integration_Cli_LatestTest  extends Releasr_Integration_Cli_Abstra
         $this->assertContains('No releases', $result);
     }
 
-    public function testListOnRepoWithOneRelease()
+    public function testLatestOnRepoWithOneRelease()
     {
-        shell_exec('releasr prepare myproject releasename');
+        shell_exec($this->_releasrPath . ' prepare myproject releasename');
         
         $result = shell_exec($this->_releasrPath . ' latest myproject');
         

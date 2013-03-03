@@ -13,7 +13,7 @@ class Releasr_Integration_Cli_ListTest  extends Releasr_Integration_Cli_Abstract
 
     public function testListOnRepoWithOneRelease()
     {
-        shell_exec('releasr prepare myproject releasename');
+        shell_exec($this->_releasrPath . ' prepare myproject releasename');
         
         $result = shell_exec($this->_releasrPath . ' list myproject');
         
