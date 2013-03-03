@@ -64,6 +64,18 @@ Optionally specify a list of allowed projects. Releasr will show an error if a p
 
     projects = project1, project2, project3
 
+svn:externals handling
+==================
+
+Currently the prepare command will warn the user if there are any externals on newly created release branch:
+
+    Warning - unversioned externals exist on branch at:
+    file:///myrepo/myproject/releases/mybranch/library
+
+The best option for resolving this is to set the svn:externals property on trunk and then re-run whatever testing you would normally do to make sure a library update has not broken your code.
+
+It's possible that a future version of Releasr will automate this.
+
 Example workflow
 ================
 
