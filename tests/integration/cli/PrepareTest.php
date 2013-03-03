@@ -7,7 +7,7 @@ class Releasr_Integration_Cli_PrepareTest  extends Releasr_Integration_Cli_Abstr
 {
     public function testPrepareOutputsMessage()
     {
-        $result = shell_exec('releasr prepare myproject mybranch');
+        $result = shell_exec($this->_releasrPath . ' prepare myproject mybranch');
 
         $this->assertContains('created branch', $result);
     }
@@ -15,7 +15,7 @@ class Releasr_Integration_Cli_PrepareTest  extends Releasr_Integration_Cli_Abstr
     public function testPrepareCopiesTrunkFilesToCorrectPlace()
     {
         $this->_commitNewFileOnTrunk("Commit Message");
-        shell_exec('releasr prepare myproject release-0');
+        shell_exec($this->_releasrPath . ' prepare myproject release-0');
 
         $result = shell_exec('svn list ' . escapeshellarg('file://' . $this->_repoPath . '/myproject/releases/release-0'));
 
