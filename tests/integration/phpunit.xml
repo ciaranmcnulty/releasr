@@ -1,0 +1,10 @@
+<phpunit bootstrap="bootstrap.php" colors="true">
+    <php>
+        <ini name="memory_limit" value="-1" />
+    </php>
+    <testsuites>
+        <testsuite>
+            <directory>cli</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
