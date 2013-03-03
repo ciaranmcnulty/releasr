@@ -12,11 +12,9 @@ class Releasr_Repo_Runner_CopyTest extends PHPUnit_Framework_Testcase
         $this->_runner = $this->getMock('Releasr_Repo_Runner_Copy', array('_doShellCommand'));
     }
     
-    public function testCopyDoesCorrectShellCommand()
+    public function testCopyDoesCorrectSvnCopyCommand()
     {
-        $this->_runner->expects($this->any())
-            ->method('_doShellCommand')
-            ->will($this->returnValue('Committed revision 1234'));
+        $this->_setUpCopyResponse('Committed revision 1234');
 
         $this->_runner->expects($this->once())
             ->method('_doShellCommand')
@@ -31,12 +29,17 @@ class Releasr_Repo_Runner_CopyTest extends PHPUnit_Framework_Testcase
 
         $this->_runner->run('http://from', 'http://to', 'msg');
     }
-
-    public function testCopyReturnsResponseFromServer()
+    
+    private function _setUpCopyResponse($msg)
     {
         $this->_runner->expects($this->any())
             ->method('_doShellCommand')
-            ->will($this->returnValue('Committed revision 1234'));
+            ->will($this->returnValue($msg));
+    }
+
+    public function testCopyReturnsResponseFromServer()
+    {
+        $this->_setUpCopyResponse('Committed revision 1234');
 
         $output = $this->_runner->run('http://from', 'http://to', 'msg');
 
@@ -48,9 +51,7 @@ class Releasr_Repo_Runner_CopyTest extends PHPUnit_Framework_Testcase
      */
     public function testCopyThrowsAnExceptionIfResponseDoesNotContainSuccessMessage()
     {
-        $this->_runner->expects($this->any())
-            ->method('_doShellCommand')
-            ->will($this->returnValue('Something about an error'));
+        $this->_setUpCopyResponse('Some sort of error occurred.');
 
         $this->_runner->run('http://from', 'http://to', 'msg');
     }
