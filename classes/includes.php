@@ -32,6 +32,7 @@ require_once 'CliCommand/Project/List.php';
 require_once 'CliCommand/Project/Latest.php';
 require_once 'CliCommand/Project/Review.php';
 require_once 'CliCommand/Project/Prepare.php';
+require_once 'Exception/BranchExists.php';
 require_once 'Exception/CliArgs.php';
 require_once 'Exception/Config.php';
 require_once 'Exception/Repo.php';

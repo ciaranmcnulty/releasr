@@ -8,6 +8,22 @@
 class Releasr_Controller_Preparer extends Releasr_Controller_Abstract
 {
     /**
+     * @var Releasr_Controller_Lister Used to work out which release is the most recent
+     */
+    private $_lister;
+
+    /**
+     * @param array $urlResolver The config of the repository
+     * @param Releasr_Repo_Runner $svnRunner The object to use to execute SVN commands
+     * @param Releasr_Controller_Lister $lister The object to use to list releases
+     */
+    public function __construct($urlResolver, $svnRunner, $lister)
+    {
+        parent::__construct($urlResolver, $svnRunner);
+        $this->_lister = $lister;
+    }
+    
+    /**
      * Creates a new release branch and returns any externals
      *
      * @param string $projectName The name of the current project
@@ -19,8 +35,23 @@ class Releasr_Controller_Preparer extends Releasr_Controller_Abstract
         $trunkUrl = $this->_urlResolver->getTrunkUrlForProject($projectName);
         $branchUrl = $this->_urlResolver->getBranchUrlForProject($projectName) . '/' . $branchName;
 
+        $this->_checkBranchDoesNotExist($projectName, $branchName);
         $this->_createReleaseBranch($trunkUrl, $branchUrl);
+
         return $this->_getUnversionedExternalsFromBranch($branchUrl);
+    }
+
+    /**
+     * Determines whether a branch already exists and if so throws an appropriate Exception
+     *
+     * @param string $projectName
+     * @param string $branchName
+     */
+    private function _checkBranchDoesNotExist($projectName, $branchName)
+    {    
+        if ($this->_lister->getRelease($projectName, $branchName)) {
+            throw new Releasr_Exception_BranchExists('Cannot create release ' . $branchName . ' because it already exists');
+        }
     }
 
     /**
@@ -49,6 +80,6 @@ class Releasr_Controller_Preparer extends Releasr_Controller_Abstract
                 $unversioned[] = $external;
             }
         }
-        return $unversioned;       
+        return $unversioned;
     }
 }

@@ -30,7 +30,7 @@ $svnRunner = new Releasr_Repo_Runner(array(
 // objects that coordinate the actions
 $lister = new Releasr_Controller_Lister($urlResolver, $svnRunner);
 $reviewer = new Releasr_Controller_Reviewer($urlResolver, $svnRunner, $lister);
-$preparer = new Releasr_Controller_Preparer($urlResolver, $svnRunner);
+$preparer = new Releasr_Controller_Preparer($urlResolver, $svnRunner, $lister);
 
 // cli command wrappers
 $commands = array(
@@ -39,6 +39,7 @@ $commands = array(
     'review' => new Releasr_CliCommand_Project_Review($config, $reviewer),
     'prepare' => new Releasr_CliCommand_Project_Prepare($config, $preparer)
 );
+
 return new Releasr_CliCommand_Meta_Main(array_merge($commands, array(
     'help' => new Releasr_CliCommand_Meta_Help($commands)
 )));

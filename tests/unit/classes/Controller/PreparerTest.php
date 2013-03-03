@@ -8,8 +8,13 @@ class Releasr_Controller_PreparerTest extends PHPUnit_Framework_Testcase
     /**
      * @var Releasr_Controller_Preparer
      */
-    private $_preparer;
-    
+    private $_preparer; 
+
+    /**
+     * @var Releasr_Controller_Lister
+     */
+    private $_lister;
+
     /** 
      * @var Releasr_SvnRunner
      */
@@ -48,7 +53,35 @@ class Releasr_Controller_PreparerTest extends PHPUnit_Framework_Testcase
                 $this->returnValue($this->_externals)
             );
 
-        $this->_preparer = new Releasr_Controller_Preparer($urlResolver, $this->_svnRunner);
+        $this->_lister = $this->getMock('Releasr_Controller_Lister', array(), array(), '', FALSE);
+
+        $this->_preparer = new Releasr_Controller_Preparer($urlResolver, $this->_svnRunner, $this->_lister);
+    }
+
+    public function testPreparerChecksIfReleaseAlreadyExists()
+    {
+        $this->_lister->expects($this->once())
+            ->method('getRelease')
+            ->with(
+                $this->equalTo('myproject'),
+                $this->equalTo('mybranch')
+            );
+
+        $this->_preparer->prepareRelease('myproject', 'mybranch');
+    }
+
+    /**
+     * @expectedException Releasr_Exception_BranchExists
+     */
+    public function testPreparerThrowsAnExceptionWhenABranchAlreadyExists()
+    {
+        $this->_lister->expects($this->any())
+            ->method('getRelease')
+            ->will(
+                $this->returnValue($this->getMock('Releasr_Repo_Release'))
+            );
+
+        $this->_preparer->prepareRelease('myproject', 'mybranch');
     }
 
     public function testPepareReleaseDoesSvnCopyWithCorrectParameters()

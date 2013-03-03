@@ -65,4 +65,32 @@ class Releasr_Controller_ListerTest extends PHPUnit_Framework_Testcase
 
         $this->assertSame($release, $latest);
     }
+
+    public function testGetReleaseReturnsFalseIfBranchDoesNotExist()
+    {
+        $release = $this->getMock('Releasr_Release');
+        $release->name = 'notmybranch';
+        
+        $this->_svnRunner->expects($this->any())
+            ->method('ls')
+            ->will($this->returnValue(array($release)));
+
+        $result = $this->_lister->getRelease('myproject', 'mybranch');
+
+        $this->assertFalse($result);
+    }
+
+    public function testGetReleaseReturnsReleasrIfNamesMatch()
+    {
+        $release = $this->getMock('Releasr_Release');
+        $release->name = 'mybranch';
+
+        $this->_svnRunner->expects($this->any())
+            ->method('ls')
+            ->will($this->returnValue(array($release)));
+
+        $result = $this->_lister->getRelease('myproject', 'mybranch');
+
+        $this->assertSame($release, $result);
+    }
 }

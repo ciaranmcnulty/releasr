@@ -35,6 +35,24 @@ class Releasr_Controller_Lister extends Releasr_Controller_Abstract
     }
 
     /**
+     * Gets a particular release by name, if it exists
+     *
+     * @param string $projectName
+     * @param string $branchName
+     * @return Releasr_Repo_Release|boolean The release or false if not found
+     */
+    public function getRelease($projectName, $branchName)
+    {
+        $releases = $this->listReleases($projectName);
+        foreach ($releases as $release) {
+            if ($release->name == $branchName) {
+                return $release;
+            }
+        }
+        return FALSE;
+    }
+
+    /**
      * @param DateTime $a
      * @param DateTime $b
      * @return integer comparison of the two dates
